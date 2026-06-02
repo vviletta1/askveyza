@@ -1,0 +1,18 @@
+# Dependencies — never commit these
+node_modules/
+
+# Environment variables — never commit real keys
+.env
+
+# Mac junk
+.DS_Store
+__MACOSX/
+._*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor folders
+.vscode/
+.idea/

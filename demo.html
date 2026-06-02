@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" data-page="demo">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AskVeyza | Demo</title>
+    <meta name="description" content="Interactive AskVeyza demo with a focused chatbot experience for business websites." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page">
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html"><span class="brand-mark">◎</span><span class="brand-name">AskVeyza</span></a>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+        <nav class="nav" id="navMenu">
+          <a data-nav="home" href="index.html">Home</a>
+          <a data-nav="how" href="how-it-works.html">How It Works</a>
+          <a data-nav="pricing" href="pricing.html">Pricing</a>
+          <a data-nav="demo" href="demo.html">Demo</a>
+          <a data-nav="waitlist" href="waitlist.html">Waitlist</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="section">
+        <div class="container demo-top-head">
+          <span class="badge">Interactive Demo</span>
+          <h1 class="page-title">Try AskVeyza with your business</h1>
+          <p class="copy">See how AskVeyza answers questions, guides next steps, and supports follow-up.</p>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container demo-layout demo-layout-focused">
+          <aside class="capability-panel card">
+            <h2 class="section-title">What AskVeyza helps you do</h2>
+            <div class="demo-config">
+              <label class="form-label">
+                Business Type
+                <select id="categorySelect" class="form-select">
+                  <option>General Business</option>
+                  <option>Nail Salon</option>
+                  <option>Hair Salon</option>
+                  <option>Med Spa</option>
+                  <option>Dentist</option>
+                  <option>Lawyer</option>
+                  <option>HVAC</option>
+                  <option>Plumbing</option>
+                  <option>Cleaning Service</option>
+                  <option>Auto Repair</option>
+                  <option>Real Estate</option>
+                  <option>Restaurant / Cafe</option>
+                  <option>Retail Store</option>
+                </select>
+              </label>
+              <div class="demo-mode-tabs" role="tablist" aria-label="Demo mode">
+                <button class="demo-mode-tab active" data-demo-mode="website" role="tab" aria-selected="true">Website Demo</button>
+                <button class="demo-mode-tab" data-demo-mode="booking" role="tab" aria-selected="false">Booking-First Demo</button>
+              </div>
+              <label class="form-label">
+                Booking Link (optional)
+                <input id="bookingLinkInput" class="form-input" type="url" placeholder="https://yourbookinglink.com" />
+              </label>
+            </div>
+            <div class="capability-list">
+              <article class="capability-item">
+                <span class="capability-icon" aria-hidden="true">💬</span>
+                <div>
+                  <h3>Answer customer questions</h3>
+                  <p>Respond instantly to common questions so visitors stay engaged.</p>
+                </div>
+              </article>
+              <article class="capability-item">
+                <span class="capability-icon" aria-hidden="true">📅</span>
+                <div>
+                  <h3>Guide visitors to book services</h3>
+                  <p>Move visitors from questions to clear booking actions.</p>
+                </div>
+              </article>
+              <article class="capability-item">
+                <span class="capability-icon" aria-hidden="true">🔔</span>
+                <div>
+                  <h3>Alert you when a customer needs help</h3>
+                  <p>Flag high-intent conversations so owners can follow up fast.</p>
+                </div>
+              </article>
+              <article class="capability-item">
+                <span class="capability-icon" aria-hidden="true">📥</span>
+                <div>
+                  <h3>Capture leads from website visitors</h3>
+                  <p>Capture details while intent is still active.</p>
+                </div>
+              </article>
+            </div>
+          </aside>
+
+          <section class="demo-main">
+            <article class="live-demo-card card" id="demoCard">
+              <div class="live-demo-head">
+                <div class="demo-assistant-tag">
+                  <img src="assets/images/veyza-icon.svg" alt="AskVeyza icon" />
+                  <div>
+                    <strong>AskVeyza</strong>
+                    <small>Your AI business assistant</small>
+                  </div>
+                </div>
+                <div class="demo-head-meta">
+                  <strong id="demoBusinessTitle">Live Chat Demo</strong>
+                  <span>Assistant online</span>
+                </div>
+              </div>
+
+              <div id="demoMessages" class="demo-messages"></div>
+              <div id="demoTyping" class="typing-indicator" hidden>
+                <span></span><span></span><span></span>
+                <em>AskVeyza is typing...</em>
+              </div>
+              <div id="demoQuickBar" class="demo-quick-bar"></div>
+
+              <form id="demoForm" class="demo-input-row">
+                <input id="demoInput" type="text" placeholder="Type a customer question..." />
+                <button class="btn btn-primary" type="submit">Send</button>
+              </form>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <section class="section section-sm">
+        <div class="container">
+          <div class="demo-support-head">
+            <h2 class="section-title">Support features</h2>
+          </div>
+          <div class="demo-support-grid">
+            <article class="support-mini-card">
+              <h3>Owner Alerts</h3>
+              <p id="alertPreviewReason">Get notified when a visitor needs your help.</p>
+              <p id="alertPreviewFollowup">Recommended action: Text customer now.</p>
+            </article>
+            <article class="support-mini-card">
+              <h3>Lead Rescue</h3>
+              <p id="alertPreviewSummary">AskVeyza escalates important customer questions before leads are lost.</p>
+              <p class="intent-line">Lead status: <span id="leadScoreBadge" class="score-badge high">HIGH INTENT</span></p>
+            </article>
+            <article class="support-mini-card memory-mini-card">
+              <h3>Customer Memory</h3>
+              <p>Recognize returning visitors and continue conversations with context.</p>
+              <ul class="summary-list">
+                <li><strong>Name:</strong> <span id="memoryName">Returning visitor</span></li>
+                <li><strong>Interested service:</strong> <span id="memoryService">General service inquiry</span></li>
+                <li><strong>Last visit:</strong> <span id="memoryLastVisit">2 days ago</span></li>
+                <li><strong>Intent:</strong> <span id="memoryIntent">High</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-row">
+        <span>© 2026 AskVeyza</span>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="how-it-works.html">How It Works</a>
+          <a href="pricing.html">Pricing</a>
+          <a href="waitlist.html">Waitlist</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

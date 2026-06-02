@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ask.veyza | AI Tools for Small Businesses</title>
+  <meta name="description" content="ask.veyza helps small businesses compete online with AI-powered website scanning, chatbots, social media tools, and local event promotion — at half the price of competitors." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#07090e;--bg2:#0d1018;--bg3:#13171f;--bg4:#191e28;
+      --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.2);
+      --text:#eef0f8;--muted:rgba(238,240,248,0.55);--muted2:rgba(238,240,248,0.3);
+      --accent:#00e5a0;--accent-dim:rgba(0,229,160,0.1);--accent-border:rgba(0,229,160,0.22);
+      --gold:#f5c842;--blue:#4d9fff;--red:#f87171;
+      --max:1160px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0;mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,black 10%,transparent 75%)}
+    .orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+    .o1{width:580px;height:580px;background:#00e5a0;top:-220px;left:-180px;opacity:.14}
+    .o2{width:480px;height:480px;background:#4d9fff;top:50px;right:-160px;opacity:.1}
+    .o3{width:360px;height:360px;background:#f5c842;bottom:30%;left:25%;opacity:.07}
+
+    /* HEADER */
+    .hdr{position:sticky;top:0;z-index:100;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(7,9,14,.82);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--text);font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+    .brand-ico{width:30px;height:30px;background:var(--accent);border-radius:8px;display:grid;place-items:center;font-size:.85rem;flex-shrink:0}
+    .brand-dot{color:var(--accent)}
+    nav{display:flex;align-items:center;gap:1.75rem}
+    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .2s}
+    nav a:hover{color:var(--text)}
+    .nav-cta{background:var(--accent);color:#040d09!important;font-weight:700!important;padding:.45rem 1rem;border-radius:8px;font-size:.84rem!important;transition:opacity .2s!important}
+    .nav-cta:hover{opacity:.88}
+    .menu-btn{display:none;background:none;border:1px solid var(--border2);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem}
+
+    .shell{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 1.5rem}
+
+    /* HERO */
+    .hero{padding:5.5rem 0 4rem;display:grid;grid-template-columns:1.1fr .9fr;gap:3.5rem;align-items:center}
+    .hero-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.32rem .8rem .32rem .45rem;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:999px;font-size:.75rem;font-weight:700;color:var(--accent);margin-bottom:1.6rem;letter-spacing:.02em}
+    .tag-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:blink 2s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+    .hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,2.8vw,2.6rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:1.25rem}
+    .hero h1 .hl{color:var(--accent)}
+    .hero-sub{font-size:1rem;color:var(--muted);line-height:1.75;max-width:460px;margin-bottom:2rem;font-weight:300}
+    .hero-btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:2.5rem}
+    .btn-a{display:inline-flex;align-items:center;gap:.4rem;background:var(--accent);color:#040d09;font-weight:700;font-size:.92rem;padding:.7rem 1.4rem;border-radius:10px;text-decoration:none;transition:opacity .2s,transform .1s}
+    .btn-a:hover{opacity:.88;transform:translateY(-1px)}
+    .btn-b{display:inline-flex;align-items:center;gap:.4rem;background:var(--bg3);color:var(--text);font-weight:600;font-size:.92rem;padding:.7rem 1.4rem;border-radius:10px;text-decoration:none;border:1px solid var(--border2);transition:border-color .2s,transform .1s}
+    .btn-b:hover{border-color:var(--border3);transform:translateY(-1px)}
+    .hero-metrics{display:flex;gap:2rem;flex-wrap:wrap}
+    .metric strong{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:700;display:block;letter-spacing:-.03em}
+    .metric span{font-size:.72rem;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+
+    /* MOCKUP */
+    .hero-vis{position:relative}
+    .mockup{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;overflow:hidden;box-shadow:0 36px 90px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04)}
+    .mbar{display:flex;align-items:center;gap:.45rem;padding:.6rem .9rem;border-bottom:1px solid var(--border);background:var(--bg3)}
+    .mdot{width:9px;height:9px;border-radius:50%}
+    .mdot:nth-child(1){background:#ff5f57}.mdot:nth-child(2){background:#febc2e}.mdot:nth-child(3){background:#28c840}
+    .murl{flex:1;background:var(--bg4);border-radius:5px;padding:.25rem .7rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);text-align:center}
+    .mbody{padding:.9rem;display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+    .mcard{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.75rem}
+    .mcard-full{grid-column:1/-1}
+    .mlabel{font-size:.62rem;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
+    .mval{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700}
+    .mval-red{color:var(--red)}.mval-gold{color:var(--gold)}
+    .msub{font-size:.67rem;color:var(--muted2);margin-top:.12rem}
+    .mrow{display:flex;align-items:center;gap:.45rem;margin-top:.35rem}
+    .mrow-lbl{font-size:.62rem;color:var(--muted2);width:54px;flex-shrink:0}
+    .mtrack{flex:1;height:4px;background:var(--border2);border-radius:99px;overflow:hidden}
+    .mfill{height:100%;border-radius:99px}
+    .missue{display:flex;gap:.4rem;padding:.4rem .55rem;border-radius:7px;font-size:.67rem;margin-top:.3rem}
+    .mi-bad{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15);color:rgba(248,113,113,.9)}
+    .mi-good{background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);color:rgba(0,229,160,.9)}
+    .chat-float{position:absolute;bottom:-18px;right:-16px;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:.65rem .9rem;box-shadow:0 14px 36px rgba(0,0,0,.4);max-width:190px;animation:floaty 3s ease-in-out infinite}
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .cfhead{font-size:.68rem;font-weight:700;color:var(--accent);margin-bottom:.3rem}
+    .chat-float p{font-size:.68rem;color:var(--muted);line-height:1.5}
+
+    /* STRIP */
+    .strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.1rem 0;display:flex;align-items:center;gap:2rem;overflow:hidden;position:relative;z-index:1}
+    .strip-label{font-size:.68rem;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;padding-left:1.5rem;flex-shrink:0}
+    .strip-track{display:flex;gap:2.8rem;animation:scroll 22s linear infinite;white-space:nowrap}
+    @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .sitem{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;color:var(--muted2)}
+
+    /* SHARED */
+    .section-eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.7rem}
+    .section-h2{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.5vw,3rem);font-weight:800;letter-spacing:-.04em;line-height:1.03;margin-bottom:.9rem}
+    .section-sub{font-size:.97rem;color:var(--muted);line-height:1.7;font-weight:300;max-width:520px;margin:0 auto}
+
+    /* STATS SECTION */
+    .stats-section{padding:5.5rem 0}
+    .stats-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
+    .stats-copy p{font-size:.95rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1.25rem}
+    .stat-cards{display:flex;flex-direction:column;gap:.7rem}
+    .scard{display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+    .scard-num{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.03em;flex-shrink:0;min-width:60px}
+    .scard-text{font-size:.84rem;color:var(--muted);line-height:1.55;padding-top:.2rem}
+
+    /* PRICE COMPARE */
+    .compare-section{padding:5.5rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .compare-header{text-align:center;margin-bottom:2.75rem}
+    .compare-table-wrap{overflow-x:auto}
+    .ctable{width:100%;border-collapse:collapse;min-width:600px}
+    .ctable th{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);padding:.7rem 1.1rem;text-align:left;border-bottom:1px solid var(--border2)}
+    .ctable th:not(:first-child){text-align:center}
+    .ctable td{padding:.85rem 1.1rem;font-size:.88rem;border-bottom:1px solid var(--border);vertical-align:middle}
+    .ctable td:not(:first-child){text-align:center}
+    .ctable tr:last-child td{border-bottom:none}
+    .ctable tr.our-row{background:rgba(0,229,160,.04)}
+    .ctable tr.our-row td{border-bottom:1px solid var(--accent-border)}
+    .ctable tr.our-row td:first-child{border-left:3px solid var(--accent);padding-left:.9rem}
+    .co-name{font-weight:700}
+    .co-us{color:var(--accent)}
+    .co-price{font-family:'DM Mono',monospace;font-weight:700}
+    .co-price-us{color:var(--accent)}
+    .co-price-them{color:var(--muted2);font-size:.82rem}
+    .tick{color:var(--accent);font-weight:700;font-size:1rem}
+    .cross{color:var(--muted2)}
+    .savings-badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:999px;padding:.25rem .75rem;font-size:.72rem;font-weight:700;color:var(--accent);margin-top:1.5rem}
+
+    /* FEATURES */
+    .features-section{padding:5.5rem 0}
+    .features-header{text-align:center;margin-bottom:3rem}
+    .features-header .section-sub{margin:0 auto}
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    .feat-card{background:var(--bg);padding:1.75rem;transition:background .2s;cursor:default}
+    .feat-card:hover{background:var(--bg2)}
+    .feat-ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;font-size:1.1rem;margin-bottom:1.1rem;border:1px solid var(--border2)}
+    .fi-g{background:rgba(0,229,160,.09);border-color:rgba(0,229,160,.2)}
+    .fi-b{background:rgba(77,159,255,.09);border-color:rgba(77,159,255,.2)}
+    .fi-y{background:rgba(245,200,66,.09);border-color:rgba(245,200,66,.2)}
+    .fi-p{background:rgba(168,85,247,.09);border-color:rgba(168,85,247,.2)}
+    .fi-pk{background:rgba(236,72,153,.09);border-color:rgba(236,72,153,.2)}
+    .fi-o{background:rgba(251,146,60,.09);border-color:rgba(251,146,60,.2)}
+    .feat-card h3{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:700;margin-bottom:.45rem;letter-spacing:-.02em}
+    .feat-card p{font-size:.84rem;color:var(--muted);line-height:1.65}
+    .feat-link{display:inline-flex;align-items:center;gap:.3rem;margin-top:.9rem;font-size:.8rem;font-weight:600;color:var(--accent);text-decoration:none}
+    .feat-new{display:inline-flex;font-size:.62rem;font-weight:700;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.25);color:var(--gold);padding:.15rem .5rem;border-radius:4px;margin-left:.4rem;vertical-align:middle;letter-spacing:.04em}
+
+    /* EARLY ACCESS - replaces testimonials */
+    .early-section{padding:5.5rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .early-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
+    .early-copy h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,2.8vw,2.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin-bottom:.9rem}
+    .early-copy p{font-size:.95rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1.5rem}
+    .early-perks{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.75rem}
+    .eperk{display:flex;align-items:center;gap:.65rem;font-size:.9rem;color:var(--muted)}
+    .eperk::before{content:'✓';color:var(--accent);font-weight:700;font-size:.8rem;flex-shrink:0}
+    .early-card{background:var(--bg3);border:1px solid var(--accent-border);border-radius:20px;padding:2rem;text-align:center;box-shadow:0 0 0 1px rgba(0,229,160,.06),0 24px 60px rgba(0,0,0,.3)}
+    .early-card-icon{font-size:2.5rem;margin-bottom:1rem}
+    .early-card h3{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem}
+    .early-card p{font-size:.88rem;color:var(--muted);line-height:1.65;margin-bottom:1.5rem}
+    .early-form{display:flex;flex-direction:column;gap:.65rem}
+    .early-form input{height:44px;background:var(--bg4);border:1px solid var(--border2);border-radius:9px;color:var(--text);padding:0 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+    .early-form input:focus{border-color:var(--accent)}
+    .early-form input::placeholder{color:var(--muted2)}
+    .early-form button{height:44px;background:var(--accent);color:#040d09;font-weight:700;font-size:.9rem;border:none;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+    .early-form button:hover{opacity:.88}
+    .early-note{font-size:.72rem;color:var(--muted2);margin-top:.5rem}
+
+    /* HOW IT WORKS */
+    .how-section{padding:5.5rem 0}
+    .how-inner{display:grid;grid-template-columns:.95fr 1.05fr;gap:4.5rem;align-items:start}
+    .steps{display:flex;flex-direction:column;gap:0}
+    .step{display:flex;gap:1.1rem;position:relative;padding-bottom:1.75rem}
+    .step:last-child{padding-bottom:0}
+    .step:not(:last-child)::after{content:'';position:absolute;left:18px;top:38px;bottom:0;width:1px;background:var(--border2)}
+    .step-n{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;font-family:'DM Mono',monospace;font-size:.78rem;font-weight:500;color:var(--muted);flex-shrink:0;position:relative;z-index:1;transition:background .2s,border-color .2s,color .2s}
+    .step:hover .step-n{background:var(--accent-dim);border-color:var(--accent-border);color:var(--accent)}
+    .step-body h3{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:700;margin-bottom:.3rem;padding-top:.45rem}
+    .step-body p{font-size:.85rem;color:var(--muted);line-height:1.6}
+    .why-panel{background:var(--bg3);border:1px solid var(--border2);border-radius:18px;padding:1.75rem;position:sticky;top:90px}
+    .why-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);margin-bottom:1.25rem}
+    .why-item{padding:.9rem 0;border-bottom:1px solid var(--border)}
+    .why-item:last-child{border-bottom:none}
+    .why-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1}
+    .why-text{font-size:.8rem;color:var(--muted);margin-top:.15rem;line-height:1.5}
+
+    /* PRICING */
+    .pricing-section{padding:5.5rem 0}
+    .pricing-header{text-align:center;margin-bottom:3rem}
+    .pricing-header .section-sub{margin:0 auto}
+    .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .pcard{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:1.75rem;transition:border-color .2s,transform .2s}
+    .pcard:hover{transform:translateY(-2px)}
+    .pcard.pfeat{background:var(--bg3);border-color:var(--accent-border);box-shadow:0 0 0 1px rgba(0,229,160,.08),0 24px 60px rgba(0,0,0,.3)}
+    .ppop{display:inline-flex;align-items:center;gap:.3rem;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:999px;padding:.22rem .7rem;font-size:.7rem;font-weight:700;color:var(--accent);margin-bottom:.9rem;letter-spacing:.03em}
+    .pname{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:700;margin-bottom:.2rem}
+    .pdesc{font-size:.8rem;color:var(--muted);margin-bottom:1.25rem}
+    .pnum{display:flex;align-items:baseline;gap:.3rem;margin-bottom:.5rem}
+    .pnum strong{font-family:'Syne',sans-serif;font-size:2.75rem;font-weight:800;letter-spacing:-.06em}
+    .pnum span{font-size:.85rem;color:var(--muted)}
+    .pcompare{font-size:.75rem;color:var(--muted2);margin-bottom:1.25rem;padding:.4rem .7rem;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border)}
+    .pcompare s{color:var(--red)}.pcompare strong{color:var(--accent)}
+    .plist{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.5rem}
+    .plist li{display:flex;align-items:flex-start;gap:.55rem;font-size:.85rem;color:var(--muted)}
+    .plist li::before{content:'✓';color:var(--accent);font-weight:700;font-size:.75rem;flex-shrink:0;margin-top:.1rem}
+    .pbtn{display:block;text-align:center;padding:.65rem;border-radius:10px;font-weight:700;font-size:.88rem;text-decoration:none;transition:opacity .2s,transform .1s}
+    .pbtn:hover{transform:translateY(-1px)}
+    .pbtn-out{border:1px solid var(--border2);color:var(--text)}
+    .pbtn-out:hover{border-color:var(--border3)}
+    .pbtn-solid{background:var(--accent);color:#040d09}
+    .pbtn-solid:hover{opacity:.88}
+
+    /* CTA */
+    .cta-section{padding:5.5rem 0}
+    .cta-inner{background:var(--bg2);border:1px solid var(--border2);border-radius:22px;padding:3.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+    .cta-inner::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:480px;height:280px;background:radial-gradient(ellipse,rgba(0,229,160,.1),transparent 70%);pointer-events:none}
+    .cta-inner h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3vw,2.5rem);font-weight:800;letter-spacing:-.04em;margin-bottom:.6rem}
+    .cta-inner p{color:var(--muted);font-size:.95rem;margin-bottom:1.75rem;font-weight:300}
+    .scan-row{display:flex;gap:.6rem;max-width:500px;margin:0 auto 1rem}
+    .scan-row input{flex:1;height:48px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;color:var(--text);padding:0 1rem;font-family:'DM Mono',monospace;font-size:.85rem;outline:none;transition:border-color .2s}
+    .scan-row input:focus{border-color:var(--accent)}
+    .scan-row input::placeholder{color:var(--muted2)}
+    .scan-row button{height:48px;padding:0 1.4rem;background:var(--accent);color:#040d09;font-weight:700;font-size:.9rem;border:none;border-radius:10px;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:opacity .2s}
+    .scan-row button:hover{opacity:.88}
+    .cta-note{font-size:.78rem;color:var(--muted2)}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:2.25rem 0;position:relative;z-index:1}
+    .foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .foot-links{display:flex;gap:1.5rem}
+    .foot-links a{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+    .foot-links a:hover{color:var(--muted)}
+    .foot-copy{font-size:.76rem;color:var(--muted2)}
+
+    /* RESPONSIVE */
+    @media(max-width:960px){
+      .hero{grid-template-columns:1fr;padding:3.5rem 0 2.5rem;gap:2rem}
+      .hero-vis{display:none}
+      .stats-inner,.early-inner{grid-template-columns:1fr}
+      .feat-grid{grid-template-columns:repeat(2,1fr)}
+      .how-inner{grid-template-columns:1fr;gap:2.5rem}
+      .why-panel{position:static}
+      .pgrid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+    }
+    @media(max-width:640px){
+      .hdr{padding:0 1rem}
+      nav{display:none}
+      nav.open{display:flex;flex-direction:column;position:fixed;inset:62px 0 0 0;background:var(--bg);padding:2rem;z-index:99;gap:1.25rem}
+      .menu-btn{display:flex;align-items:center;justify-content:center}
+      .feat-grid{grid-template-columns:1fr}
+      .scan-row{flex-direction:column}
+      .scan-row button,.early-form button{width:100%}
+      .compare-table-wrap{border-radius:12px;border:1px solid var(--border);overflow:hidden}
+    }
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <a class="brand" href="index.html">
+    <div class="brand-ico">🤖</div>ask<span class="brand-dot">.</span>veyza
+  </a>
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <nav id="navMenu">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#early-access">Early Access</a>
+    <a href="waitlist.html">Waitlist</a>
+    <a href="scanner-report.html" class="nav-cta">Free Scan →</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="shell">
+  <section class="hero">
+    <div>
+      <div class="hero-tag"><span class="tag-dot"></span> AI tools for small businesses, worldwide</div>
+      <h1 class="reveal">
+        Your website should be<br/>
+        your best salesperson.<br/>
+        <span class="hl">Let's make it one.</span>
+      </h1>
+      <p class="hero-sub reveal">ask.veyza gives small businesses the same powerful online tools that big companies pay thousands for — site audits, local SEO, AI chatbots, and social media help — at a fraction of the price.</p>
+      <div class="hero-btns reveal">
+        <a class="btn-a" href="scanner-report.html">Scan My Website Free →</a>
+        <a class="btn-b" href="demo.html">Build My Chatbot</a>
+      </div>
+      <div class="hero-metrics reveal">
+        <div class="metric"><strong>$49</strong><span>/ month</span></div>
+        <div class="metric"><strong>½ price</strong><span>vs. competitors</span></div>
+        <div class="metric"><strong>15+</strong><span>checks per scan</span></div>
+        <div class="metric"><strong>30 sec</strong><span>free report</span></div>
+      </div>
+    </div>
+
+    <!-- MOCKUP -->
+    <div class="hero-vis reveal">
+      <div class="mockup">
+        <div class="mbar">
+          <div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
+          <div class="murl">ask.veyza / scanner-report</div>
+        </div>
+        <div class="mbody">
+          <div class="mcard mcard-full" style="display:flex;align-items:center;gap:.9rem">
+            <div style="width:52px;height:52px;border-radius:50%;border:4px solid var(--accent-border);display:grid;place-items:center;flex-shrink:0">
+              <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--accent)">74</span>
+            </div>
+            <div style="flex:1">
+              <div class="mlabel">Website Score — yourbusiness.com</div>
+              <div class="mrow"><span class="mrow-lbl">Audit</span><div class="mtrack"><div class="mfill" style="width:78%;background:var(--accent)"></div></div></div>
+              <div class="mrow"><span class="mrow-lbl">Local SEO</span><div class="mtrack"><div class="mfill" style="width:62%;background:var(--blue)"></div></div></div>
+              <div class="mrow"><span class="mrow-lbl">Competitor</span><div class="mtrack"><div class="mfill" style="width:71%;background:var(--gold)"></div></div></div>
+            </div>
+          </div>
+          <div class="mcard"><div class="mlabel">Issues Found</div><div class="mval mval-red">6</div><div class="msub">4 Critical · 2 Warn</div></div>
+          <div class="mcard"><div class="mlabel">vs. Competitors</div><div class="mval mval-gold">+18</div><div class="msub">Above local avg</div></div>
+          <div class="mcard mcard-full">
+            <div class="mlabel" style="margin-bottom:.35rem">Top findings</div>
+            <div class="missue mi-bad">✕ No meta description — search engines can't read your page</div>
+            <div class="missue mi-bad">✕ No Google Maps link — customers can't find you easily</div>
+            <div class="missue mi-good">✓ HTTPS secure · Mobile ready · Contact info found</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-float">
+        <div class="cfhead">🤖 ask.veyza AI</div>
+        <p>Hi! Ready to book or have questions about our services?</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- INDUSTRY STRIP -->
+<div class="strip">
+  <span class="strip-label">Works for</span>
+  <div class="strip-track">
+    <span class="sitem">Hair Salons</span><span class="sitem">HVAC Companies</span><span class="sitem">Dental Offices</span><span class="sitem">Nail Spas</span><span class="sitem">Bakeries & Cafés</span><span class="sitem">Gyms & Studios</span><span class="sitem">Med Spas</span><span class="sitem">Plumbers</span><span class="sitem">Florists</span><span class="sitem">Clinics</span><span class="sitem">Law Offices</span><span class="sitem">Contractors</span>
+    <span class="sitem">Hair Salons</span><span class="sitem">HVAC Companies</span><span class="sitem">Dental Offices</span><span class="sitem">Nail Spas</span><span class="sitem">Bakeries & Cafés</span><span class="sitem">Gyms & Studios</span><span class="sitem">Med Spas</span><span class="sitem">Plumbers</span><span class="sitem">Florists</span><span class="sitem">Clinics</span><span class="sitem">Law Offices</span><span class="sitem">Contractors</span>
+  </div>
+</div>
+
+<!-- STATS / WHY IT MATTERS -->
+<div class="shell">
+  <section class="stats-section">
+    <div class="stats-inner">
+      <div class="stats-copy">
+        <div class="section-eyebrow">Why it matters</div>
+        <h2 class="section-h2 reveal">Most small business websites<br/>are losing customers silently.</h2>
+        <p class="reveal">Visitors land on your site and leave in seconds — not because your business isn't great, but because the website isn't doing its job. ask.veyza shows you exactly what's wrong and how to fix it.</p>
+        <a class="btn-a reveal" href="scanner-report.html" style="display:inline-flex;margin-top:.5rem">Get your free score →</a>
+      </div>
+      <div class="stat-cards reveal">
+        <div class="scard"><div class="scard-num" style="color:var(--red)">97%</div><div class="scard-text">of people search online before visiting a local business — if you're not showing up, they go elsewhere</div></div>
+        <div class="scard"><div class="scard-num" style="color:var(--gold)">8 sec</div><div class="scard-text">is all you get before a visitor decides whether to stay or leave your site</div></div>
+        <div class="scard"><div class="scard-num" style="color:var(--accent)">67%</div><div class="scard-text">of small business websites score below 55 out of 100 — most owners have no idea</div></div>
+        <div class="scard"><div class="scard-num" style="color:var(--blue)">2.4×</div><div class="scard-text">more leads captured on average after adding an AI chatbot that answers questions 24/7</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- COMPETITOR PRICE COMPARISON -->
+<section class="compare-section" id="pricing-compare">
+  <div class="shell">
+    <div class="compare-header">
+      <div class="section-eyebrow">Price comparison</div>
+      <h2 class="section-h2 reveal">Half the price.<br/>All the features.</h2>
+      <p class="section-sub reveal">Big marketing platforms charge hundreds a month for the same tools. ask.veyza is built for small businesses — not enterprise budgets.</p>
+    </div>
+    <div class="compare-table-wrap reveal">
+      <table class="ctable">
+        <thead>
+          <tr>
+            <th>Platform</th><th>Monthly Cost</th><th>Site Audit</th><th>Local SEO</th><th>AI Chatbot</th><th>Lead Capture</th><th>Built for Small Biz</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="co-name">SEMrush</td>
+            <td class="co-price co-price-them">$139 – $499</td>
+            <td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕</td><td class="cross">✕</td><td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td class="co-name">Yext</td>
+            <td class="co-price co-price-them">$199 – $449</td>
+            <td class="cross">✕</td><td class="tick">✓</td><td class="cross">✕</td><td class="cross">✕</td><td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td class="co-name">BrightLocal</td>
+            <td class="co-price co-price-them">$39 – $149</td>
+            <td class="tick">✓</td><td class="tick">✓</td><td class="cross">✕</td><td class="cross">✕</td><td class="cross">✕</td>
+          </tr>
+          <tr>
+            <td class="co-name">Broadly</td>
+            <td class="co-price co-price-them">$199+</td>
+            <td class="cross">✕</td><td class="cross">✕</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td>
+          </tr>
+          <tr class="our-row">
+            <td class="co-name co-us">⭐ ask.veyza</td>
+            <td class="co-price co-price-us">$29 – $99</td>
+            <td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align:center">
+      <span class="savings-badge reveal">💚 Save up to $400/month vs. SEMrush — with more features built for small businesses</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="shell">
+  <section class="features-section" id="features">
+    <div class="features-header">
+      <div class="section-eyebrow">Everything you need</div>
+      <h2 class="section-h2 reveal">One platform. Every tool<br/>your business needs to grow.</h2>
+      <p class="section-sub reveal">Website scanner, local SEO, AI chatbot, lead capture, social media tools, and local event promotion — all in one place.</p>
+    </div>
+    <div class="feat-grid reveal">
+      <div class="feat-card">
+        <div class="feat-ico fi-g">🔍</div>
+        <h3>AI Website Scanner</h3>
+        <p>15+ checks on SEO, mobile, speed, trust signals, and conversion paths. Works on any site — even StyleSeat or Vagaro profiles.</p>
+        <a class="feat-link" href="scanner-report.html">Run free scan →</a>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ico fi-b">📍</div>
+        <h3>Local SEO Score</h3>
+        <p>Phone, address, Google Maps, hours, reviews — every signal that helps customers find you, scored and explained in plain English.</p>
+        <a class="feat-link" href="scanner-report.html">Check local score →</a>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ico fi-y">📊</div>
+        <h3>Competitor Benchmark</h3>
+        <p>See how you stack up against top competitors in your area — with a clear table showing exactly where to close the gap.</p>
+        <a class="feat-link" href="scanner-report.html">Compare now →</a>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ico fi-p">💬</div>
+        <h3>AI Chatbot Builder</h3>
+        <p>Build a chatbot trained on your business in minutes. It answers questions, captures leads, and books appointments while you're with clients.</p>
+        <a class="feat-link" href="demo.html">Build chatbot →</a>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ico fi-pk">📱</div>
+        <h3>Social Media Tools <span class="feat-new">NEW</span></h3>
+        <p>AI-written caption ideas, hashtag suggestions, and weekly post schedules tailored to your business type — so you stay visible without the stress.</p>
+        <a class="feat-link" href="#pricing">View plans →</a>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ico fi-o">🎉</div>
+        <h3>Events & Specials Board <span class="feat-new">NEW</span></h3>
+        <p>Promote your deals and events to customers nearby. Stay connected to local happenings where your business can show up and stand out.</p>
+        <a class="feat-link" href="#pricing">View plans →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- EARLY ACCESS (replaces fake testimonials) -->
+<section class="early-section" id="early-access">
+  <div class="shell">
+    <div class="early-inner">
+      <div class="early-copy">
+        <div class="section-eyebrow">Early access</div>
+        <h2 class="section-h2 reveal">Be among the first<br/>businesses on ask.veyza.</h2>
+        <p class="reveal">We're onboarding our first wave of small businesses right now. Early access members get locked-in pricing, direct input on new features, and first access to social media and events tools as they launch.</p>
+        <div class="early-perks reveal">
+          <div class="eperk">Locked-in pricing — never pay more as we grow</div>
+          <div class="eperk">Direct line to request features for your industry</div>
+          <div class="eperk">First access to social media & events tools</div>
+          <div class="eperk">Free onboarding call to get your chatbot set up</div>
+        </div>
+        <a class="btn-b reveal" href="waitlist.html">Join the waitlist →</a>
+      </div>
+      <div class="early-card reveal">
+        <div class="early-card-icon">🚀</div>
+        <h3>Get your free site scan</h3>
+        <p>No account needed. Enter your URL and see your full website score, audit, and local SEO breakdown in 30 seconds.</p>
+        <form class="early-form" onsubmit="handleEarlyScan(event)">
+          <input type="url" id="early-url" placeholder="https://yourbusiness.com" />
+          <button type="submit">Scan My Website Free →</button>
+        </form>
+        <p class="early-note">Works on any URL — your own site, StyleSeat, Vagaro, Square, and more.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="shell">
+  <section class="how-section" id="how">
+    <div class="how-inner">
+      <div>
+        <div class="section-eyebrow">How it works</div>
+        <h2 class="section-h2 reveal">From scan to more<br/>customers in 4 steps.</h2>
+        <p class="section-sub reveal" style="margin:0 0 2.25rem;max-width:400px">Takes 30 seconds to start. No account needed for your free report.</p>
+        <div class="steps">
+          <div class="step reveal"><div class="step-n">01</div><div class="step-body"><h3>Paste your URL</h3><p>Any website — your own site, a StyleSeat profile, Vagaro page, or any business URL worldwide.</p></div></div>
+          <div class="step reveal"><div class="step-n">02</div><div class="step-body"><h3>Get your full report</h3><p>Site audit, local SEO score, and competitor benchmark — all in one page, in plain English. No jargon.</p></div></div>
+          <div class="step reveal"><div class="step-n">03</div><div class="step-body"><h3>Fix what's costing you</h3><p>Every issue has a specific recommendation. No guessing, no technical knowledge needed.</p></div></div>
+          <div class="step reveal"><div class="step-n">04</div><div class="step-body"><h3>Grow with AI tools</h3><p>Add a chatbot, promote your specials, and use social tools to stay visible to customers year-round.</p></div></div>
+        </div>
+      </div>
+      <div class="why-panel reveal">
+        <div class="why-title">By the numbers</div>
+        <div class="why-item"><div class="why-num" style="color:var(--accent)">88%</div><div class="why-text">of customers check a website before visiting a local business</div></div>
+        <div class="why-item"><div class="why-num" style="color:var(--gold)">3 sec</div><div class="why-text">is all you get before a visitor decides to stay or leave</div></div>
+        <div class="why-item"><div class="why-num" style="color:var(--blue)">2.4×</div><div class="why-text">more leads on average after adding an AI chatbot</div></div>
+        <div class="why-item"><div class="why-num" style="color:var(--muted)">$400</div><div class="why-text">saved per month compared to using SEMrush for the same results</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PRICING -->
+<div class="shell">
+  <section class="pricing-section" id="pricing">
+    <div class="pricing-header">
+      <div class="section-eyebrow">Pricing</div>
+      <h2 class="section-h2 reveal">Plans built for<br/>real business budgets.</h2>
+      <p class="section-sub reveal">No long contracts. No hidden fees. Cancel anytime. Start free — no card required.</p>
+    </div>
+    <div class="pgrid reveal">
+      <div class="pcard">
+        <div class="pname">Starter</div>
+        <div class="pdesc">For getting started</div>
+        <div class="pnum"><strong>$29</strong><span>/ month</span></div>
+        <div class="pcompare">vs. <s>BrightLocal at $39/mo</s> — <strong>save $10/mo</strong></div>
+        <ul class="plist">
+          <li>Monthly website scan report</li>
+          <li>Basic AI recommendations</li>
+          <li>Basic AI chatbot</li>
+          <li>Email support</li>
+        </ul>
+        <a href="pricing.html" class="pbtn pbtn-out">Get Started</a>
+      </div>
+      <div class="pcard pfeat">
+        <div class="ppop">⭐ Most Popular</div>
+        <div class="pname">Growth</div>
+        <div class="pdesc">For growing your business</div>
+        <div class="pnum"><strong>$49</strong><span>/ month</span></div>
+        <div class="pcompare">vs. <s>SEMrush at $139/mo</s> — <strong>save $90/mo</strong></div>
+        <ul class="plist">
+          <li>Full site audit + local SEO score</li>
+          <li>Competitor benchmark report</li>
+          <li>AI chatbot builder</li>
+          <li>Lead capture dashboard</li>
+          <li>Social media caption tools</li>
+          <li>Events & specials board</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="pricing.html" class="pbtn pbtn-solid">Get Started →</a>
+      </div>
+      <div class="pcard">
+        <div class="pname">Pro</div>
+        <div class="pdesc">For scaling businesses</div>
+        <div class="pnum"><strong>$99</strong><span>/ month</span></div>
+        <div class="pcompare">vs. <s>Broadly at $199/mo</s> — <strong>save $100/mo</strong></div>
+        <ul class="plist">
+          <li>Everything in Growth</li>
+          <li>Custom branded reports</li>
+          <li>Traffic recommendations</li>
+          <li>Conversion tracking</li>
+          <li>Monthly strategy call</li>
+          <li>Multi-location support</li>
+        </ul>
+        <a href="pricing.html" class="pbtn pbtn-out">Get Started</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FINAL CTA -->
+<div class="shell">
+  <section class="cta-section" id="free-scan">
+    <div class="cta-inner reveal">
+      <div class="section-eyebrow">Free website analysis</div>
+      <h2>See your score in 30 seconds.</h2>
+      <p>No account. No credit card. Just your URL and a full report.</p>
+      <form class="scan-row" onsubmit="handleScan(event)">
+        <input type="url" id="cta-url" placeholder="https://yourbusiness.com" />
+        <button type="submit">Scan My Website →</button>
+      </form>
+      <p class="cta-note">Works on any website — StyleSeat, Vagaro, Square, Wix, Squarespace, and more.</p>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="shell">
+    <div class="foot-inner">
+      <a class="brand" href="index.html" style="font-size:1rem">
+        <div class="brand-ico" style="width:26px;height:26px;font-size:.78rem">🤖</div>
+        ask<span class="brand-dot">.</span>veyza
+      </a>
+      <div class="foot-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#early-access">Early Access</a>
+        <a href="waitlist.html">Waitlist</a>
+        <a href="scanner-report.html">Free Scan</a>
+        <a href="how-it-works.html">How It Works</a>
+      </div>
+      <span class="foot-copy">© 2026 ask.veyza</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const nav = document.getElementById('navMenu');
+  menuBtn.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    menuBtn.textContent = nav.classList.contains('open') ? '✕' : '☰';
+  });
+
+  function scanRedirect(url) {
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    location.href = 'scanner-report.html?url=' + encodeURIComponent(url);
+  }
+  function handleScan(e) { e.preventDefault(); scanRedirect(document.getElementById('cta-url').value.trim()); }
+  function handleEarlyScan(e) { e.preventDefault(); scanRedirect(document.getElementById('early-url').value.trim()); }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 55);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

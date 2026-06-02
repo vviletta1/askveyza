@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AskVeyza | Waitlist</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card: rgba(255, 255, 255, 0.035);
+      --card-strong: rgba(255, 255, 255, 0.055);
+      --border: rgba(255, 255, 255, 0.1);
+      --border-soft: rgba(255, 255, 255, 0.07);
+      --purple: #a855f7;
+      --purple-light: #c4b5fd;
+      --text: rgba(255, 255, 255, 1);
+      --body: rgba(255, 255, 255, 0.6);
+      --hint: rgba(255, 255, 255, 0.35);
+      --radius-input: 8px;
+      --radius-card: 12px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(168, 85, 247, 0.16), transparent 32rem),
+        radial-gradient(circle at bottom right, rgba(196, 181, 253, 0.08), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 0 1rem 2.5rem;
+    }
+
+    .nav-wrap {
+      border-bottom: 1px solid var(--border-soft);
+      margin-bottom: 3rem;
+    }
+
+    .nav {
+      max-width: 980px;
+      margin: 0 auto;
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--purple), #d946ef);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 28px rgba(168, 85, 247, 0.25);
+    }
+
+    .logo-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: var(--purple-light);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.24);
+    }
+
+    .wordmark {
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      color: var(--body);
+      font-size: 0.88rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--purple-light);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      border-radius: var(--radius-pill);
+      background: rgba(168, 85, 247, 0.16);
+      color: var(--purple-light);
+      border: 1px solid rgba(168, 85, 247, 0.22);
+      padding: 0.36rem 0.75rem;
+      font-size: 0.75rem;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: 28px;
+      line-height: 1.15;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      margin-top: 0.55rem;
+      color: var(--body);
+      font-size: 15px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .signup-card {
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: 1.08rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+      width: 100%;
+    }
+
+    label {
+      color: var(--body);
+      font-size: 12px;
+    }
+
+    .optional {
+      color: var(--hint);
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 43px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-input);
+      background: rgba(255, 255, 255, 0.055);
+      color: var(--text);
+      padding: 0.72rem 0.78rem;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: var(--hint);
+    }
+
+    select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, var(--purple-light) 50%),
+        linear-gradient(135deg, var(--purple-light) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 50%,
+        calc(100% - 13px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+      padding-right: 2.2rem;
+    }
+
+    select option {
+      background: #141420;
+      color: #fff;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(196, 181, 253, 0.55);
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.14);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+    }
+
+    .btn {
+      width: 100%;
+      border-radius: var(--radius-input);
+      min-height: 45px;
+      padding: 0.78rem 1rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 500;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--purple), #d946ef);
+      box-shadow: 0 16px 36px rgba(168, 85, 247, 0.22);
+    }
+
+    .why {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.02em;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .benefit-card {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-card);
+      padding: 1rem;
+    }
+
+    .benefit-card i {
+      display: inline-flex;
+      color: var(--purple-light);
+      font-size: 1.25rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .benefit-card h3 {
+      font-size: 0.92rem;
+      font-weight: 500;
+      margin-bottom: 0.18rem;
+    }
+
+    .benefit-card p {
+      color: var(--body);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .referral-card {
+      background:
+        linear-gradient(135deg, rgba(168, 85, 247, 0.16), rgba(168, 85, 247, 0.045)),
+        rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(168, 85, 247, 0.28);
+      margin-bottom: 2.5rem;
+    }
+
+    .referral-card h2 {
+      margin-top: 0.9rem;
+      margin-bottom: 0.35rem;
+      font-size: 1.15rem;
+    }
+
+    .referral-copy {
+      color: var(--body);
+      font-size: 14px;
+      margin-bottom: 1.2rem;
+    }
+
+    .btn-outline {
+      color: var(--text);
+      background: transparent;
+      border-color: rgba(196, 181, 253, 0.35);
+    }
+
+    .btn-outline:hover {
+      background: rgba(168, 85, 247, 0.1);
+      border-color: rgba(196, 181, 253, 0.6);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--hint);
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding-inline: 1rem;
+      }
+
+      .nav {
+        min-height: auto;
+        padding: 1rem 0;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .card {
+        padding: 1.15rem;
+      }
+
+      .two-col,
+      .benefit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="nav-wrap">
+      <nav class="nav" aria-label="main navigation">
+        <a class="brand" href="./index.html" aria-label="AskVeyza home">
+          <span class="logo-mark" aria-hidden="true">
+            <span class="logo-dot"></span>
+          </span>
+          <span class="wordmark">AskVeyza</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="./index.html">Home</a>
+          <a href="./pricing.html">Pricing</a>
+          <a href="./waitlist.html" class="active">Waitlist</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero" aria-labelledby="waitlist-heading">
+        <span class="pill">Early access</span>
+        <h1 id="waitlist-heading">Join the AskVeyza waitlist</h1>
+        <p class="subtitle">Get early access and launch updates for your business.</p>
+      </section>
+
+      <section class="card signup-card" aria-labelledby="signup-title">
+        <h2 id="signup-title">Get on the list</h2>
+
+        <form>
+          <div class="field">
+            <label for="full-name">Full name</label>
+            <input id="full-name" name="full-name" type="text" autocomplete="name" placeholder="Jane Doe" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@business.com" />
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label for="business-name">Business name</label>
+              <input id="business-name" name="business-name" type="text" autocomplete="organization" placeholder="Your business" />
+            </div>
+
+            <div class="field">
+              <label for="business-type">Business type</label>
+              <select id="business-type" name="business-type">
+                <option value="">Select business type</option>
+                <option value="beauty">Beauty or wellness</option>
+                <option value="restaurant">Restaurant or food</option>
+                <option value="retail">Retail</option>
+                <option value="service">Service business</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="website">Website or booking link <span class="optional">(optional)</span></label>
+            <input id="website" name="website" type="url" placeholder="https://yourbusiness.com" />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Join waitlist</button>
+        </form>
+      </section>
+
+      <section class="why" aria-labelledby="why-title">
+        <h2 id="why-title" class="section-title">Why join now</h2>
+
+        <div class="benefit-grid">
+          <article class="benefit-card">
+            <i class="ti ti-sparkles" aria-hidden="true"></i>
+            <h3>Early access</h3>
+            <p>Be first to try AskVeyza.</p>
+          </article>
+
+          <article class="benefit-card">
+            <i class="ti ti-bell" aria-hidden="true"></i>
+            <h3>Priority updates</h3>
+            <p>Get launch news first.</p>
+          </article>
+
+          <article class="benefit-card">
+            <i class="ti ti-gift" aria-hidden="true"></i>
+            <h3>Launch offers</h3>
+            <p>Unlock early customer perks.</p>
+          </article>
+
+          <article class="benefit-card">
+            <i class="ti ti-users" aria-hidden="true"></i>
+            <h3>Referral rewards</h3>
+            <p>Earn free Growth months.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card referral-card" aria-labelledby="referral-title">
+        <span class="pill">Referral promotion</span>
+        <h2 id="referral-title">Refer a friend, earn 3 free months</h2>
+        <p class="referral-copy">Share AskVeyza with a business owner. If they become a paid customer, you get 3 months of Growth free.</p>
+
+        <form>
+          <div class="two-col">
+            <div class="field">
+              <label for="referrer-name">Your name</label>
+              <input id="referrer-name" name="referrer-name" type="text" placeholder="Your name" />
+            </div>
+
+            <div class="field">
+              <label for="referrer-email">Your email</label>
+              <input id="referrer-email" name="referrer-email" type="email" placeholder="you@email.com" />
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <label for="referred-name">Their name</label>
+              <input id="referred-name" name="referred-name" type="text" placeholder="Their name" />
+            </div>
+
+            <div class="field">
+              <label for="referred-email">Their email</label>
+              <input id="referred-email" name="referred-email" type="email" placeholder="their@email.com" />
+            </div>
+          </div>
+
+          <button class="btn btn-outline" type="submit">Submit referral</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 AskVeyza</p>
+    </footer>
+  </div>
+</body>
+</html>

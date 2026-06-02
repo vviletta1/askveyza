@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Veyza AI assistant icon">
+  <defs>
+    <linearGradient id="avaBubble" x1="20" y1="18" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6C63FF"/>
+      <stop offset="1" stop-color="#8B7CFF"/>
+    </linearGradient>
+    <linearGradient id="avaGlow" x1="32" y1="28" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="avaShadow" x="10" y="12" width="108" height="106" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#3D38A8" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#avaGlow)"/>
+  <g filter="url(#avaShadow)">
+    <path d="M64 20C37.49 20 16 38.8 16 62C16 84.13 35.74 102.1 60.96 103.85C62.28 103.94 63.44 104.65 64.08 105.78L67.6 112L74.54 102.2C75.18 101.3 76.16 100.71 77.27 100.57C96.24 98.26 112 81.66 112 62C112 38.8 90.51 20 64 20Z" fill="url(#avaBubble)"/>
+    <path d="M36 53C36 38.09 48.09 26 63 26H66C80.91 26 93 38.09 93 53V58C93 71.81 81.81 83 68 83H60C46.19 83 35 71.81 35 58V53H36Z" fill="url(#avaGlow)" opacity="0.5"/>
+  </g>
+  <circle cx="50" cy="60" r="5" fill="#F4F1FF"/>
+  <circle cx="78" cy="60" r="5" fill="#F4F1FF"/>
+  <path d="M47 78C51.2 83.33 57.6 86 64 86C70.4 86 76.8 83.33 81 78" stroke="#F6F3FF" stroke-width="6" stroke-linecap="round"/>
+  <g transform="translate(88 18)">
+    <path d="M12 0L14.9 8.1L23 11L14.9 13.9L12 22L9.1 13.9L1 11L9.1 8.1L12 0Z" fill="#00D1FF"/>
+    <path d="M3.5 26L4.55 29.2L7.8 30.25L4.55 31.3L3.5 34.5L2.45 31.3L-0.8 30.25L2.45 29.2L3.5 26Z" fill="#8FEFFF"/>
+  </g>
+</svg>
