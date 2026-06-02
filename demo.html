@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ask.veyza | Build Your AI Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#07090e;--bg2:#0d1018;--bg3:#13171f;--bg4:#191e28;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.2);--text:#eef0f8;--muted:rgba(238,240,248,0.55);--muted2:rgba(238,240,248,0.3);--accent:#00e5a0;--accent-dim:rgba(0,229,160,0.1);--accent-border:rgba(0,229,160,0.22);--gold:#f5c842;--blue:#4d9fff;--red:#f87171;--purple:#a855f7;--max:1200px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0;mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,black 10%,transparent 75%)}
+    .orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+    .o1{width:500px;height:500px;background:#00e5a0;top:-200px;left:-180px;opacity:.12}
+    .o2{width:400px;height:400px;background:#4d9fff;top:100px;right:-150px;opacity:.08}
+    .o3{width:300px;height:300px;background:#a855f7;bottom:20%;left:30%;opacity:.06}
+    .hdr{position:sticky;top:0;z-index:100;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(7,9,14,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--text);font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+    .brand-ico{width:30px;height:30px;background:var(--accent);border-radius:8px;display:grid;place-items:center;font-size:.85rem;flex-shrink:0}
+    .brand-dot{color:var(--accent)}
+    nav{display:flex;align-items:center;gap:1.75rem}
+    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .2s}
+    nav a:hover{color:var(--text)}
+    .nav-cta{background:var(--accent);color:#040d09!important;font-weight:700!important;padding:.45rem 1rem;border-radius:8px;font-size:.84rem!important}
+    .menu-btn{display:none;background:none;border:1px solid var(--border2);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem}
+    .shell{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 1.5rem}
+    .eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.75rem}
+    .section-h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3vw,2.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:.9rem}
+
+    /* HERO */
+    .page-hero{padding:3.5rem 0 2.5rem;text-align:center}
+    .page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(1.9rem,3.2vw,3rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:.75rem}
+    .page-hero p{font-size:1rem;color:var(--muted);max-width:560px;margin:0 auto 1.5rem;line-height:1.7;font-weight:300}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-bottom:2rem}
+    .htag{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .75rem;background:var(--bg2);border:1px solid var(--border2);border-radius:999px;font-size:.78rem;font-weight:600;color:var(--muted)}
+
+    /* WHAT IT DOES - VALUE PROPS */
+    .value-section{padding:4rem 0;border-top:1px solid var(--border)}
+    .value-header{text-align:center;margin-bottom:3rem}
+    .value-header p{color:var(--muted);max-width:520px;margin:.5rem auto 0;font-size:.95rem;line-height:1.7;font-weight:300}
+    .value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:3rem}
+    .value-card{background:var(--bg);padding:1.75rem;transition:background .2s}
+    .value-card:hover{background:var(--bg2)}
+    .value-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:1.2rem;margin-bottom:1rem;border:1px solid var(--border2)}
+    .vi-g{background:rgba(0,229,160,.09);border-color:rgba(0,229,160,.2)}
+    .vi-b{background:rgba(77,159,255,.09);border-color:rgba(77,159,255,.2)}
+    .vi-y{background:rgba(245,200,66,.09);border-color:rgba(245,200,66,.2)}
+    .vi-p{background:rgba(168,85,247,.09);border-color:rgba(168,85,247,.2)}
+    .vi-r{background:rgba(248,113,113,.09);border-color:rgba(248,113,113,.2)}
+    .vi-o{background:rgba(251,146,60,.09);border-color:rgba(251,146,60,.2)}
+    .value-card h3{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:700;margin-bottom:.4rem;letter-spacing:-.02em}
+    .value-card p{font-size:.84rem;color:var(--muted);line-height:1.65}
+    .new-tag{display:inline-flex;font-size:.62rem;font-weight:700;background:rgba(245,200,66,.12);border:1px solid rgba(245,200,66,.25);color:var(--gold);padding:.15rem .5rem;border-radius:4px;margin-left:.4rem;vertical-align:middle}
+
+    /* EXTRA PERSON SECTION */
+    .person-section{padding:4rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .person-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .person-copy p{font-size:.95rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1rem}
+    .person-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1.25rem}
+    .pli{display:flex;align-items:flex-start;gap:.65rem;font-size:.9rem;color:var(--muted);padding:.5rem 0;border-bottom:1px solid var(--border)}
+    .pli:last-child{border-bottom:none}
+    .pli-ico{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+    .pli-body strong{display:block;color:var(--text);font-weight:600;margin-bottom:.15rem;font-size:.9rem}
+    .person-stats{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+    .pstat{background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:1.25rem}
+    .pstat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1}
+    .pstat-label{font-size:.78rem;color:var(--muted);margin-top:.3rem;line-height:1.45}
+
+    /* ANALYTICS SECTION */
+    .analytics-section{padding:4rem 0}
+    .analytics-header{text-align:center;margin-bottom:3rem}
+    .analytics-header p{color:var(--muted);max-width:500px;margin:.5rem auto 0;font-size:.95rem;font-weight:300;line-height:1.7}
+    .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:3rem}
+    .a-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.25rem}
+    .a-card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted2);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
+    .a-card-title span{font-size:.9rem}
+
+    /* CHART BARS */
+    .bar-chart{display:flex;flex-direction:column;gap:.6rem}
+    .bar-row{display:flex;align-items:center;gap:.75rem}
+    .bar-lbl{font-size:.75rem;color:var(--muted);width:80px;flex-shrink:0}
+    .bar-track{flex:1;height:8px;background:var(--bg3);border-radius:99px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:99px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+    .bar-val{font-size:.75rem;font-family:'DM Mono',monospace;font-weight:500;width:36px;text-align:right;flex-shrink:0}
+
+    /* DONUT */
+    .donut-wrap{display:flex;align-items:center;gap:1.25rem}
+    .donut-svg{flex-shrink:0}
+    .donut-legend{display:flex;flex-direction:column;gap:.5rem}
+    .dleg{display:flex;align-items:center;gap:.5rem;font-size:.78rem}
+    .dleg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .dleg-label{color:var(--muted)}
+    .dleg-val{font-weight:700;font-family:'DM Mono',monospace;margin-left:auto;font-size:.72rem}
+
+    /* LINE CHART AREA */
+    .metric-big{display:flex;align-items:baseline;gap:.4rem;margin-bottom:.5rem}
+    .metric-big-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-.04em}
+    .metric-big-change{font-size:.78rem;font-weight:700;padding:.15rem .45rem;border-radius:5px}
+    .change-up{background:rgba(0,229,160,.1);color:var(--accent)}
+    .change-down{background:rgba(248,113,113,.1);color:var(--red)}
+    .sparkline{height:48px;width:100%;margin-top:.5rem}
+
+    /* COMPARISON TABLE */
+    .comp-section{padding:4rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .comp-header{text-align:center;margin-bottom:2.5rem}
+    .comp-header p{color:var(--muted);max-width:480px;margin:.5rem auto 0;font-size:.95rem;font-weight:300}
+    .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+    .comp-col{background:var(--bg3);border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+    .comp-col.with-bot{border-color:var(--accent-border)}
+    .comp-col-head{padding:1rem 1.25rem;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--border)}
+    .comp-col.with-bot .comp-col-head{background:var(--accent-dim);color:var(--accent)}
+    .comp-col-head .badge{font-size:.65rem;font-weight:700;padding:.2rem .55rem;border-radius:4px;background:var(--accent);color:#040d09}
+    .comp-item{display:flex;align-items:flex-start;gap:.65rem;padding:.8rem 1.25rem;border-bottom:1px solid var(--border);font-size:.85rem}
+    .comp-item:last-child{border-bottom:none}
+    .comp-item-ico{font-size:1rem;flex-shrink:0}
+    .comp-item-text{color:var(--muted);line-height:1.5}
+    .comp-item-text strong{color:var(--text);display:block;margin-bottom:.1rem}
+
+    /* CALL TEXT SECTION */
+    .calltext-section{padding:4rem 0}
+    .calltext-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+    .calltext-copy p{font-size:.95rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1rem}
+    .alert-demo{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:.75rem}
+    .alert-demo-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem}
+    .alert-demo-icon{font-size:1.1rem}
+    .alert-demo-title{font-size:.82rem;font-weight:700;color:var(--gold)}
+    .alert-demo-time{font-size:.68rem;color:var(--muted2);margin-left:auto}
+    .alert-demo-msg{font-size:.8rem;color:var(--muted);line-height:1.55;margin-bottom:.65rem}
+    .alert-demo-btns{display:flex;gap:.4rem}
+    .adbtn{padding:.3rem .7rem;border-radius:6px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none}
+    .adbtn-g{background:var(--accent);color:#040d09}
+    .adbtn-s{background:var(--bg3);color:var(--muted);border:1px solid var(--border2)}
+    .sms-bubble{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1rem 1.1rem;margin-bottom:.75rem;position:relative}
+    .sms-from{font-size:.68rem;font-weight:700;color:var(--accent);margin-bottom:.35rem}
+    .sms-text{font-size:.82rem;color:var(--text);line-height:1.55}
+    .sms-time{font-size:.65rem;color:var(--muted2);margin-top:.3rem;text-align:right}
+
+    /* BUILDER SECTION */
+    .builder-section{padding:4rem 0;border-top:1px solid var(--border)}
+    .builder-header{text-align:center;margin-bottom:2.5rem}
+    .builder-header p{color:var(--muted);max-width:480px;margin:.5rem auto 0;font-size:.95rem;font-weight:300}
+    .steps-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:2rem}
+    .step-item{display:flex;flex-direction:column;align-items:center;gap:.4rem;position:relative;z-index:1}
+    .step-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--border2);background:var(--bg2);display:grid;place-items:center;font-size:.78rem;font-weight:700;color:var(--muted);transition:all .3s;cursor:pointer}
+    .step-circle.active{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+    .step-circle.done{border-color:var(--accent);background:var(--accent);color:#040d09}
+    .step-label{font-size:.68rem;font-weight:600;color:var(--muted2);white-space:nowrap;transition:color .3s}
+    .step-label.active{color:var(--accent)}
+    .step-line{width:70px;height:2px;background:var(--border2);margin:0 .4rem;margin-bottom:1.2rem;transition:background .3s}
+    .step-line.done{background:var(--accent)}
+
+    .builder{display:grid;grid-template-columns:360px 1fr;gap:1.5rem;align-items:start}
+    .builder-panel{background:var(--bg2);border:1px solid var(--border);border-radius:18px;overflow:hidden;position:sticky;top:82px}
+    .panel-tabs{display:flex;border-bottom:1px solid var(--border)}
+    .ptab{flex:1;padding:.65rem .4rem;text-align:center;font-size:.72rem;font-weight:700;color:var(--muted2);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif}
+    .ptab.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .panel-body{padding:1.25rem}
+    .panel-section{display:none}
+    .panel-section.active{display:block}
+    .field-group{margin-bottom:1rem}
+    .field-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);display:block;margin-bottom:.4rem}
+    .field-input{width:100%;height:40px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);padding:0 .9rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+    .field-input:focus{border-color:var(--accent)}
+    .field-input::placeholder{color:var(--muted2)}
+    .field-select{width:100%;height:40px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);padding:0 .9rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;appearance:none;cursor:pointer}
+    .field-select:focus{border-color:var(--accent)}
+    .field-textarea{width:100%;min-height:75px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;color:var(--text);padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;resize:vertical}
+    .field-textarea:focus{border-color:var(--accent)}
+    .field-textarea::placeholder{color:var(--muted2)}
+    .color-options{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
+    .color-opt{width:26px;height:26px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .2s,border-color .2s}
+    .color-opt:hover{transform:scale(1.15)}
+    .color-opt.selected{border-color:white;transform:scale(1.1)}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--border)}
+    .toggle-row:last-child{border-bottom:none}
+    .toggle-info{flex:1}
+    .toggle-title{font-size:.83rem;font-weight:600}
+    .toggle-desc{font-size:.71rem;color:var(--muted2);margin-top:.1rem}
+    .toggle-sw{width:34px;height:19px;background:var(--border2);border-radius:99px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+    .toggle-sw.on{background:var(--accent)}
+    .toggle-sw::after{content:'';position:absolute;width:13px;height:13px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s}
+    .toggle-sw.on::after{left:18px}
+    .apply-btn{width:100%;height:40px;background:linear-gradient(135deg,var(--accent),#00c080);color:#040d09;font-weight:700;font-size:.88rem;border:none;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s;margin-top:1rem}
+    .apply-btn:hover{opacity:.88}
+
+    /* CHAT PREVIEW */
+    .preview-col{display:flex;flex-direction:column;gap:1.1rem}
+    .preview-label{display:flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2)}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .chat-card{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+    .chat-head{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;border-bottom:1px solid var(--border)}
+    .chat-head-left{display:flex;align-items:center;gap:.6rem}
+    .chat-bot-avatar{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:.85rem;flex-shrink:0;transition:background .3s}
+    .chat-bot-name{font-size:.86rem;font-weight:700}
+    .chat-status{font-size:.68rem;color:var(--accent);display:flex;align-items:center;gap:.25rem;margin-top:.08rem}
+    .sdot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+    .chat-messages{height:290px;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.6rem;scroll-behavior:smooth}
+    .chat-messages::-webkit-scrollbar{width:3px}
+    .chat-messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+    .msg{display:flex;flex-direction:column;max-width:80%}
+    .msg.bot{align-self:flex-start}
+    .msg.user{align-self:flex-end}
+    .msg-bubble{padding:.55rem .8rem;border-radius:13px;font-size:.84rem;line-height:1.55}
+    .msg.bot .msg-bubble{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px}
+    .msg.user .msg-bubble{color:#040d09;font-weight:500;border-bottom-right-radius:4px}
+    .msg-time{font-size:.6rem;color:var(--muted2);padding:0 .2rem;margin-top:.12rem}
+    .msg.user .msg-time{text-align:right}
+    .typing{display:flex;align-items:center;gap:.3rem;padding:.45rem .75rem;background:var(--bg3);border:1px solid var(--border);border-radius:13px;border-bottom-left-radius:4px;align-self:flex-start;width:52px}
+    .typing span{width:5px;height:5px;background:var(--muted);border-radius:50%;animation:bounce .9s ease-in-out infinite}
+    .typing span:nth-child(2){animation-delay:.15s}
+    .typing span:nth-child(3){animation-delay:.3s}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+    .quick-btns{display:flex;flex-wrap:wrap;gap:.35rem;padding:.6rem .9rem;border-top:1px solid var(--border)}
+    .qbtn{padding:.28rem .6rem;border-radius:999px;border:1px solid var(--border2);background:var(--bg3);color:var(--muted);font-size:.73rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap}
+    .qbtn:hover{border-color:var(--accent-border);color:var(--accent);background:var(--accent-dim)}
+    .chat-input-row{display:flex;gap:.5rem;padding:.8rem .9rem;border-top:1px solid var(--border)}
+    .chat-input{flex:1;height:38px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:0 .8rem;font-family:'DM Sans',sans-serif;font-size:.84rem;outline:none;transition:border-color .2s}
+    .chat-input:focus{border-color:var(--accent)}
+    .chat-input::placeholder{color:var(--muted2)}
+    .send-btn{height:38px;padding:0 .9rem;font-weight:700;font-size:.82rem;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s;color:#040d09}
+    .send-btn:hover{opacity:.88}
+
+    /* ALERT + PROFILE CARDS */
+    .alert-notif{background:var(--bg2);border:1px solid rgba(245,200,66,.25);border-radius:14px;padding:.9rem 1.1rem;display:flex;gap:.7rem;align-items:flex-start}
+    .alert-body .alert-title{font-size:.8rem;font-weight:700;color:var(--gold);margin-bottom:.2rem}
+    .alert-body .alert-msg{font-size:.77rem;color:var(--muted);line-height:1.5}
+    .alert-body .alert-time{font-size:.65rem;color:var(--muted2);margin-top:.25rem}
+    .alert-actions{display:flex;gap:.4rem;margin-top:.45rem}
+    .alert-btn{padding:.22rem .6rem;border-radius:5px;font-size:.7rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none}
+    .alert-btn-call{background:var(--accent);color:#040d09}
+    .alert-btn-later{background:var(--bg3);color:var(--muted);border:1px solid var(--border2)}
+
+    .customer-profile{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem}
+    .cp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+    .cp-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted2)}
+    .cp-badge{font-size:.66rem;font-weight:700;padding:.18rem .5rem;border-radius:4px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+    .cp-person{display:flex;align-items:center;gap:.7rem;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+    .cp-avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;flex-shrink:0}
+    .cp-name{font-size:.88rem;font-weight:700}
+    .cp-since{font-size:.7rem;color:var(--muted2)}
+    .cp-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.4rem;margin-bottom:.75rem}
+    .cp-stat{background:var(--bg3);border-radius:7px;padding:.45rem .55rem;text-align:center}
+    .cp-stat-val{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;letter-spacing:-.02em}
+    .cp-stat-lbl{font-size:.6rem;color:var(--muted2);margin-top:.08rem}
+    .cp-history{display:flex;flex-direction:column;gap:.3rem}
+    .cp-hist-item{display:flex;align-items:center;justify-content:space-between;font-size:.76rem;padding:.28rem 0;border-bottom:1px solid var(--border)}
+    .cp-hist-item:last-child{border-bottom:none}
+    .cp-hist-label{color:var(--muted)}
+    .cp-hist-val{font-weight:600;font-family:'DM Mono',monospace;font-size:.7rem}
+
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem}
+    .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:.85rem}
+    .stat-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);margin-bottom:.3rem}
+    .stat-val{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;letter-spacing:-.03em}
+    .stat-sub{font-size:.7rem;color:var(--muted);margin-top:.12rem}
+
+    /* FINAL CTA */
+    .final-cta{padding:4rem 0}
+    .cta-inner{background:linear-gradient(135deg,rgba(0,229,160,.08),rgba(0,229,160,.03));border:1px solid var(--accent-border);border-radius:22px;padding:3.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+    .cta-inner::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:400px;height:220px;background:radial-gradient(ellipse,rgba(0,229,160,.12),transparent 70%);pointer-events:none}
+    .cta-inner h2{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3vw,2.5rem);font-weight:800;letter-spacing:-.04em;margin-bottom:.6rem}
+    .cta-inner p{color:var(--muted);font-size:.95rem;margin-bottom:1.75rem;font-weight:300;max-width:480px;margin-left:auto;margin-right:auto}
+    .cta-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+    .btn-a{display:inline-flex;align-items:center;gap:.4rem;background:var(--accent);color:#040d09;font-weight:700;font-size:.92rem;padding:.7rem 1.4rem;border-radius:10px;text-decoration:none;transition:opacity .2s}
+    .btn-a:hover{opacity:.88}
+    .btn-b{display:inline-flex;align-items:center;gap:.4rem;background:var(--bg3);color:var(--text);font-weight:600;font-size:.92rem;padding:.7rem 1.4rem;border-radius:10px;text-decoration:none;border:1px solid var(--border2);transition:border-color .2s}
+    .btn-b:hover{border-color:var(--border3)}
+
+    footer{border-top:1px solid var(--border);padding:2rem 0;position:relative;z-index:1}
+    .foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .foot-links{display:flex;gap:1.5rem}
+    .foot-links a{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+    .foot-links a:hover{color:var(--muted)}
+    .foot-copy{font-size:.76rem;color:var(--muted2)}
+
+    @media(max-width:960px){.person-inner,.calltext-inner,.comp-grid,.analytics-grid{grid-template-columns:1fr}.builder{grid-template-columns:1fr}.builder-panel{position:static}.value-grid{grid-template-columns:repeat(2,1fr)}.stats-row{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){.hdr{padding:0 1rem}nav{display:none}nav.open{display:flex;flex-direction:column;position:fixed;inset:62px 0 0 0;background:var(--bg);padding:2rem;z-index:99;gap:1.25rem}.menu-btn{display:flex;align-items:center;justify-content:center}.value-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr}}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+
+<header class="hdr">
+  <a class="brand" href="index.html"><div class="brand-ico">🤖</div>ask<span class="brand-dot">.</span>veyza</a>
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <nav id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="waitlist.html">Waitlist</a>
+    <a href="scanner-report.html" class="nav-cta">Free Scan →</a>
+  </nav>
+</header>
+
+<div class="shell">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="eyebrow">AI Chatbot Builder</div>
+    <h1>Like hiring an extra team member —<br/>without the salary.</h1>
+    <p>Your ask.veyza chatbot answers questions, books appointments, captures leads, and texts you alerts — 24 hours a day, 7 days a week, automatically.</p>
+    <div class="hero-tags">
+      <span class="htag">💬 Answers customer questions</span>
+      <span class="htag">📅 Books appointments</span>
+      <span class="htag">📱 Texts you alerts</span>
+      <span class="htag">📥 Captures leads</span>
+      <span class="htag">🔔 Calls for urgent issues</span>
+      <span class="htag">👤 Saves customer profiles</span>
+    </div>
+  </div>
+
+  <!-- WHAT IT DOES -->
+  <section class="value-section">
+    <div class="value-header reveal">
+      <div class="eyebrow">Full feature scope</div>
+      <h2 class="section-h2">Everything your chatbot does for you</h2>
+      <p>One AI assistant that covers every part of your customer journey — from the first question to the booked appointment.</p>
+    </div>
+    <div class="value-grid reveal">
+      <div class="value-card">
+        <div class="value-ico vi-g">💬</div>
+        <h3>Instant Q&A</h3>
+        <p>Answers pricing, hours, services, location, and FAQs the moment a customer asks — no wait, no missed messages.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-ico vi-b">📅</div>
+        <h3>Appointment Booking</h3>
+        <p>Guides visitors to book directly through your scheduling link. Handles the whole conversation to get them there.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-ico vi-y">📱</div>
+        <h3>SMS & Call Alerts <span class="new-tag">NEW</span></h3>
+        <p>Get a text on your phone the moment a high-intent customer asks about pricing, complains, or wants to speak to you.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-ico vi-p">📥</div>
+        <h3>Lead Capture</h3>
+        <p>Saves every visitor's name, number, and what they were interested in — automatically, while you're with another client.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-ico vi-r">🔔</div>
+        <h3>Urgent Call Escalation <span class="new-tag">NEW</span></h3>
+        <p>When a customer conversation gets urgent, the chatbot can trigger an automatic call alert to the owner — no one gets left behind.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-ico vi-o">👤</div>
+        <h3>Customer Profiles</h3>
+        <p>Builds a profile for every visitor — intent score, what they asked, return visits, and follow-up status saved automatically.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- LIKE AN EXTRA PERSON -->
+<section class="person-section">
+  <div class="shell">
+    <div class="person-inner">
+      <div class="person-copy reveal">
+        <div class="eyebrow">Why it matters</div>
+        <h2 class="section-h2">It's like having an extra<br/>person on your team.</h2>
+        <p>A new employee costs $3,000–$5,000/month in salary, benefits, and training. Your ask.veyza chatbot does the same front-desk work for $49/month — and never calls in sick.</p>
+        <p>While you're with a client, doing a job, or simply closed for the night — your chatbot is still there, answering questions and capturing every lead that walks through the digital door.</p>
+        <div class="person-list">
+          <div class="pli"><span class="pli-ico">🕐</span><div class="pli-body"><strong>Works 24/7, including nights and weekends</strong>No missed messages while you're busy or closed</div></div>
+          <div class="pli"><span class="pli-ico">📱</span><div class="pli-body"><strong>Texts you instantly when something needs your attention</strong>Pricing questions, complaints, booking requests — you know right away</div></div>
+          <div class="pli"><span class="pli-ico">🧠</span><div class="pli-body"><strong>Trained on your specific business</strong>Knows your services, hours, prices, and booking process</div></div>
+          <div class="pli"><span class="pli-ico">📈</span><div class="pli-body"><strong>Gets smarter over time</strong>Learns from every conversation to improve responses</div></div>
+        </div>
+      </div>
+      <div class="person-stats reveal">
+        <div class="pstat">
+          <div class="pstat-num" style="color:var(--accent)">$49</div>
+          <div class="pstat-label">per month vs. $3,000–$5,000 for a full-time front desk employee</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-num" style="color:var(--gold)">24/7</div>
+          <div class="pstat-label">availability — answers customers at 11pm on a Sunday without overtime</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-num" style="color:var(--blue)">&lt;1s</div>
+          <div class="pstat-label">response time — customers get answers instantly, not hours later</div>
+        </div>
+        <div class="pstat">
+          <div class="pstat-num" style="color:var(--purple)">2.4×</div>
+          <div class="pstat-label">more leads captured on average compared to no chatbot</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS -->
+<div class="shell">
+  <section class="analytics-section">
+    <div class="analytics-header reveal">
+      <div class="eyebrow">Real analytics</div>
+      <h2 class="section-h2">See exactly how your<br/>chatbot performs.</h2>
+      <p>Every conversation generates data. Track leads, response quality, peak hours, and more from your dashboard.</p>
+    </div>
+    <div class="analytics-grid reveal">
+
+      <div class="a-card">
+        <div class="a-card-title"><span>📈</span> Weekly leads captured</div>
+        <div class="metric-big">
+          <div class="metric-big-num" style="color:var(--accent)">47</div>
+          <div class="metric-big-change change-up">+18% vs last week</div>
+        </div>
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem">Leads captured automatically while you worked</div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-lbl">Mon</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--accent)"></div></div><span class="bar-val" style="color:var(--accent)">5</span></div>
+          <div class="bar-row"><span class="bar-lbl">Tue</span><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--accent)"></div></div><span class="bar-val" style="color:var(--accent)">7</span></div>
+          <div class="bar-row"><span class="bar-lbl">Wed</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--accent)"></div></div><span class="bar-val" style="color:var(--accent)">9</span></div>
+          <div class="bar-row"><span class="bar-lbl">Thu</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--accent)"></div></div><span class="bar-val" style="color:var(--accent)">6</span></div>
+          <div class="bar-row"><span class="bar-lbl">Fri</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--accent)"></div></div><span class="bar-val" style="color:var(--accent)">11</span></div>
+          <div class="bar-row"><span class="bar-lbl">Sat</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--accent)"></div></div><span class="bar-val" style="color:var(--accent)">9</span></div>
+        </div>
+      </div>
+
+      <div class="a-card">
+        <div class="a-card-title"><span>🎯</span> Visitor intent breakdown</div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="40" fill="none" stroke="var(--bg3)" stroke-width="16"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="#00e5a0" stroke-width="16" stroke-dasharray="100 151" stroke-dashoffset="25" transform="rotate(-90 55 55)"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="#f5c842" stroke-width="16" stroke-dasharray="60 191" stroke-dashoffset="-75" transform="rotate(-90 55 55)"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="#4d9fff" stroke-width="16" stroke-dasharray="91 160" stroke-dashoffset="-135" transform="rotate(-90 55 55)"/>
+            <text x="55" y="50" text-anchor="middle" font-family="Syne" font-size="13" font-weight="800" fill="#eef0f8">251</text>
+            <text x="55" y="64" text-anchor="middle" font-family="DM Sans" font-size="8" fill="rgba(238,240,248,0.5)">visitors</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="dleg"><span class="dleg-dot" style="background:var(--accent)"></span><span class="dleg-label">High intent</span><span class="dleg-val" style="color:var(--accent)">40%</span></div>
+            <div class="dleg"><span class="dleg-dot" style="background:var(--gold)"></span><span class="dleg-label">Interested</span><span class="dleg-val" style="color:var(--gold)">24%</span></div>
+            <div class="dleg"><span class="dleg-dot" style="background:var(--blue)"></span><span class="dleg-label">Browsing</span><span class="dleg-val" style="color:var(--blue)">36%</span></div>
+          </div>
+        </div>
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.78rem;color:var(--muted)">
+          <strong style="color:var(--accent)">100 high-intent leads</strong> this week — each one a potential booking
+        </div>
+      </div>
+
+      <div class="a-card">
+        <div class="a-card-title"><span>🕐</span> Peak chat hours</div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-lbl">6–9am</span><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--blue)"></div></div><span class="bar-val" style="color:var(--blue)">12</span></div>
+          <div class="bar-row"><span class="bar-lbl">9am–12</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--blue)"></div></div><span class="bar-val" style="color:var(--blue)">38</span></div>
+          <div class="bar-row"><span class="bar-lbl">12–3pm</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--blue)"></div></div><span class="bar-val" style="color:var(--blue)">47</span></div>
+          <div class="bar-row"><span class="bar-lbl">3–6pm</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue)"></div></div><span class="bar-val" style="color:var(--blue)">53</span></div>
+          <div class="bar-row"><span class="bar-lbl">6–9pm</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--gold)"></div></div><span class="bar-val" style="color:var(--gold)">44</span></div>
+          <div class="bar-row"><span class="bar-lbl">9pm–6am</span><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--red)"></div></div><span class="bar-val" style="color:var(--red)">21</span></div>
+        </div>
+        <div style="margin-top:.75rem;font-size:.75rem;color:var(--red)">🔴 21 chats happened while you were closed — all captured</div>
+      </div>
+
+      <div class="a-card">
+        <div class="a-card-title"><span>💰</span> Revenue impact estimate</div>
+        <div class="metric-big" style="margin-bottom:.4rem">
+          <div class="metric-big-num" style="color:var(--gold)">$2,340</div>
+          <div class="metric-big-change change-up">this month</div>
+        </div>
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:.85rem">Estimated from 47 leads × avg $50 service value × 50% close rate</div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-lbl">Leads</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--gold)"></div></div><span class="bar-val" style="color:var(--gold)">47</span></div>
+          <div class="bar-row"><span class="bar-lbl">Booked</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--gold)"></div></div><span class="bar-val" style="color:var(--gold)">24</span></div>
+          <div class="bar-row"><span class="bar-lbl">Converted</span><div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--gold)"></div></div><span class="bar-val" style="color:var(--gold)">15</span></div>
+        </div>
+        <div style="margin-top:.75rem;padding:.5rem .75rem;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;font-size:.75rem;color:var(--accent);font-weight:600">
+          ROI: $2,340 revenue from $49 subscription = 47× return
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- WITHOUT VS WITH -->
+<section class="comp-section">
+  <div class="shell">
+    <div class="comp-header reveal">
+      <div class="eyebrow">The difference</div>
+      <h2 class="section-h2">Without vs. with ask.veyza</h2>
+      <p>See exactly what changes when your chatbot is running for your business.</p>
+    </div>
+    <div class="comp-grid reveal">
+      <div class="comp-col">
+        <div class="comp-col-head">❌ Without ask.veyza</div>
+        <div class="comp-item"><span class="comp-item-ico">😴</span><div class="comp-item-text"><strong>Missed messages overnight</strong>Customers who reach out after hours get no response and go elsewhere</div></div>
+        <div class="comp-item"><span class="comp-item-ico">📵</span><div class="comp-item-text"><strong>No lead capture</strong>Visitors browse and leave — you never know they were interested</div></div>
+        <div class="comp-item"><span class="comp-item-ico">⏳</span><div class="comp-item-text"><strong>Slow response times</strong>Customers wait hours for a reply — most don't wait that long</div></div>
+        <div class="comp-item"><span class="comp-item-ico">🤷</span><div class="comp-item-text"><strong>No visibility into intent</strong>You don't know who's serious and who's just browsing</div></div>
+        <div class="comp-item"><span class="comp-item-ico">📞</span><div class="comp-item-text"><strong>Interruptions during work</strong>Calls and messages break your flow while you're with a client</div></div>
+      </div>
+      <div class="comp-col with-bot">
+        <div class="comp-col-head">✓ With ask.veyza <span class="badge">Active</span></div>
+        <div class="comp-item"><span class="comp-item-ico">🌙</span><div class="comp-item-text"><strong>24/7 coverage, even at 2am</strong>Every question gets an instant answer regardless of your hours</div></div>
+        <div class="comp-item"><span class="comp-item-ico">📥</span><div class="comp-item-text"><strong>Every visitor becomes a lead</strong>Names, numbers, and intent captured automatically while you sleep</div></div>
+        <div class="comp-item"><span class="comp-item-ico">⚡</span><div class="comp-item-text"><strong>Sub-second responses</strong>Customers get answers immediately — no waiting, no bouncing</div></div>
+        <div class="comp-item"><span class="comp-item-ico">🎯</span><div class="comp-item-text"><strong>Intent scoring on every visitor</strong>Know who's ready to book vs. who's just looking — prioritize your follow-up</div></div>
+        <div class="comp-item"><span class="comp-item-ico">📱</span><div class="comp-item-text"><strong>Smart text alerts, not spam</strong>Only get notified for things that actually need you — urgent issues, hot leads</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SMS + CALL ALERTS -->
+<div class="shell">
+  <section class="calltext-section">
+    <div class="calltext-inner">
+      <div class="calltext-copy reveal">
+        <div class="eyebrow">SMS & Call Alerts</div>
+        <h2 class="section-h2">Your phone buzzes when<br/>a customer needs you.</h2>
+        <p>You can't watch the chatbot all day — and you shouldn't have to. ask.veyza watches it for you and only texts or calls when something actually matters.</p>
+        <p>Set your own triggers: pricing questions, booking requests, complaints, or any time a visitor asks to speak to the owner. You stay focused on your work until it's time to step in.</p>
+        <div class="person-list" style="margin-top:1rem">
+          <div class="pli"><span class="pli-ico">📱</span><div class="pli-body"><strong>Text alerts for high-intent leads</strong>Get a message with the customer's name and what they asked</div></div>
+          <div class="pli"><span class="pli-ico">📞</span><div class="pli-body"><strong>Call alerts for urgent issues</strong>Automatic call to your phone when something can't wait</div></div>
+          <div class="pli"><span class="pli-ico">⚙️</span><div class="pli-body"><strong>You control the triggers</strong>Choose exactly what warrants an alert — nothing more, nothing less</div></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="sms-bubble">
+          <div class="sms-from">📱 ask.veyza Alert</div>
+          <div class="sms-text">New lead: Sarah asked about pricing for a full set + gel on your chatbot. She mentioned she wants to book this week. Reply to follow up.</div>
+          <div class="sms-time">Today 7:42 PM</div>
+        </div>
+        <div class="sms-bubble">
+          <div class="sms-from">🔔 ask.veyza Urgent</div>
+          <div class="sms-text">Customer complaint detected: James said he had a bad experience last visit and wants to speak to the owner. Tap to call him now.</div>
+          <div class="sms-time">Today 8:15 PM</div>
+        </div>
+        <div class="alert-notif" style="margin-top:.75rem">
+          <span style="font-size:1.2rem">📞</span>
+          <div class="alert-body">
+            <div class="alert-title">Call Alert — Hot Lead</div>
+            <div class="alert-msg">Marcus is asking about your Pro services and mentioned a $500+ budget. This one is worth a personal call.</div>
+            <div class="alert-time">Just now · via ask.veyza</div>
+            <div class="alert-actions">
+              <button class="alert-btn alert-btn-call">Call Marcus Now</button>
+              <button class="alert-btn alert-btn-later">Remind in 1hr</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- BUILDER -->
+<div class="shell">
+  <section class="builder-section" id="builder">
+    <div class="builder-header reveal">
+      <div class="eyebrow">Try it yourself</div>
+      <h2 class="section-h2">Build your chatbot.<br/>See it live right now.</h2>
+      <p>Customize it with your business info, colors, and alerts — then watch it respond to real customer questions.</p>
+    </div>
+
+    <div class="steps-bar">
+      <div class="step-item" onclick="goStep(1)"><div class="step-circle active" id="sc1">1</div><div class="step-label active" id="sl1">Business</div></div>
+      <div class="step-line" id="sl12"></div>
+      <div class="step-item" onclick="goStep(2)"><div class="step-circle" id="sc2">2</div><div class="step-label" id="sl2">Design</div></div>
+      <div class="step-line" id="sl23"></div>
+      <div class="step-item" onclick="goStep(3)"><div class="step-circle" id="sc3">3</div><div class="step-label" id="sl3">Alerts</div></div>
+      <div class="step-line" id="sl34"></div>
+      <div class="step-item" onclick="goStep(4)"><div class="step-circle" id="sc4">4</div><div class="step-label" id="sl4">Preview</div></div>
+    </div>
+
+    <div class="builder">
+      <div class="builder-panel">
+        <div class="panel-tabs">
+          <button class="ptab active" onclick="switchTab('business',this)">🏢 Business</button>
+          <button class="ptab" onclick="switchTab('design',this)">🎨 Design</button>
+          <button class="ptab" onclick="switchTab('alerts',this)">🔔 Alerts</button>
+          <button class="ptab" onclick="switchTab('profile',this)">👤 Profile</button>
+        </div>
+        <div class="panel-body">
+
+          <div class="panel-section active" id="tab-business">
+            <div class="field-group"><label class="field-label">Business Name</label><input class="field-input" id="bizName" placeholder="e.g. Maria's Hair Studio" oninput="updatePreview()" /></div>
+            <div class="field-group"><label class="field-label">Business Type</label>
+              <select class="field-select" id="bizType" onchange="updatePreview()">
+                <option>Hair Salon</option><option>Nail Salon</option><option>Med Spa</option><option>Dental Office</option><option>HVAC Company</option><option>Plumbing</option><option>Law Office</option><option>Restaurant / Cafe</option><option>Gym / Fitness Studio</option><option>Cleaning Service</option><option>Auto Repair</option><option>Real Estate</option><option>General Business</option>
+              </select>
+            </div>
+            <div class="field-group"><label class="field-label">Greeting Message</label><input class="field-input" id="greeting" placeholder="Hi! How can I help you today?" oninput="updatePreview()" /></div>
+            <div class="field-group"><label class="field-label">Booking Link (optional)</label><input class="field-input" id="bookingLink" placeholder="https://yourbooking.com" /></div>
+            <div class="field-group"><label class="field-label">Services (one per line)</label><textarea class="field-textarea" id="services" placeholder="Hair coloring&#10;Haircuts&#10;Highlights"></textarea></div>
+            <button class="apply-btn" onclick="applyBusiness()">Save & Continue →</button>
+          </div>
+
+          <div class="panel-section" id="tab-design">
+            <div class="field-group"><label class="field-label">Accent Color</label>
+              <div class="color-options" id="colorPicker">
+                <div class="color-opt selected" data-color="#00e5a0" style="background:#00e5a0" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#4d9fff" style="background:#4d9fff" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#f5c842" style="background:#f5c842" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#a855f7" style="background:#a855f7" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#f87171" style="background:#f87171" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#fb923c" style="background:#fb923c" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#ec4899" style="background:#ec4899" onclick="pickColor(this)"></div>
+                <div class="color-opt" data-color="#ffffff" style="background:#fff;border:1px solid var(--border2)" onclick="pickColor(this)"></div>
+              </div>
+            </div>
+            <div class="field-group"><label class="field-label">Bot Avatar</label>
+              <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem" id="emojiPicker">
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:2px solid var(--accent);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="🤖">🤖</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="💬">💬</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="✂️">✂️</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="💅">💅</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="🔧">🔧</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="⚖️">⚖️</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="🏥">🏥</div>
+                <div onclick="pickEmoji(this)" style="width:34px;height:34px;border-radius:8px;background:var(--bg3);border:1px solid var(--border2);display:grid;place-items:center;cursor:pointer;font-size:1rem" data-emoji="🍽️">🍽️</div>
+              </div>
+            </div>
+            <div class="field-group" style="margin-top:1rem">
+              <label class="field-label">Options</label>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.4rem">
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Quick reply buttons</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Typing animation</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Message timestamps</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+              </div>
+            </div>
+            <button class="apply-btn" onclick="applyDesign()">Apply Design →</button>
+          </div>
+
+          <div class="panel-section" id="tab-alerts">
+            <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.6">Get texted or called when a customer needs your attention.</p>
+            <div class="field-group"><label class="field-label">Your Phone Number</label><input class="field-input" id="alertPhone" placeholder="+1 (555) 000-0000" oninput="updateAlertPreview()" /></div>
+            <div class="field-group"><label class="field-label">Alert me when...</label>
+              <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.4rem">
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Pricing questions</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Booking requests</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Complaints or issues</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Requests to speak to owner</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+                <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Any new lead captured</div></div><div class="toggle-sw" onclick="this.classList.toggle('on')"></div></div>
+              </div>
+            </div>
+            <div id="alertPhonePreview" style="display:none;margin-top:.75rem">
+              <div class="sms-bubble" style="margin:0">
+                <div class="sms-from">📱 ask.veyza Alert</div>
+                <div class="sms-text">New lead on your chatbot — they asked about pricing. Tap to follow up.</div>
+                <div class="sms-time">Preview of your text alert</div>
+              </div>
+            </div>
+            <button class="apply-btn" onclick="applyAlerts()">Save Alert Settings →</button>
+          </div>
+
+          <div class="panel-section" id="tab-profile">
+            <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.6">Every visitor who chats gets a profile saved automatically.</p>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem">
+              <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.65rem;padding-bottom:.65rem;border-bottom:1px solid var(--border)">
+                <div style="width:34px;height:34px;border-radius:50%;background:rgba(0,229,160,.15);color:var(--accent);display:grid;place-items:center;font-weight:800;font-family:'Syne',sans-serif">S</div>
+                <div><div style="font-size:.86rem;font-weight:700">Sarah M.</div><div style="font-size:.7rem;color:var(--muted2)">New visitor · High intent</div></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:.3rem">
+                <div style="display:flex;justify-content:space-between;font-size:.77rem"><span style="color:var(--muted2)">First seen</span><span style="font-weight:600;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted)">Today, 2:34pm</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.77rem"><span style="color:var(--muted2)">Asked about</span><span style="font-weight:600;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold)">Pricing, booking</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.77rem"><span style="color:var(--muted2)">Lead score</span><span style="font-weight:600;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent)">High</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.77rem"><span style="color:var(--muted2)">Alert sent</span><span style="font-weight:600;font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent)">Yes ✓</span></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.4rem">
+              <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Save visitor names</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Save phone numbers</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Track return visits</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="toggle-row"><div class="toggle-info"><div class="toggle-title">Auto lead scoring</div></div><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LIVE PREVIEW -->
+      <div class="preview-col">
+        <div class="preview-label"><span class="live-dot"></span> Live preview</div>
+
+        <div class="chat-card">
+          <div class="chat-head">
+            <div class="chat-head-left">
+              <div class="chat-bot-avatar" id="botAvatar" style="background:var(--accent-dim);border:1px solid var(--accent-border)">🤖</div>
+              <div>
+                <div class="chat-bot-name" id="chatBotName">Your Business Assistant</div>
+                <div class="chat-status"><span class="sdot"></span> Online now</div>
+              </div>
+            </div>
+            <div style="font-size:.7rem;color:var(--muted2)">ask.veyza AI</div>
+          </div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="quick-btns" id="quickBtns">
+            <button class="qbtn" onclick="sendQuick(this)">Check pricing</button>
+            <button class="qbtn" onclick="sendQuick(this)">Book now</button>
+            <button class="qbtn" onclick="sendQuick(this)">Our services</button>
+            <button class="qbtn" onclick="sendQuick(this)">Talk to owner</button>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" placeholder="Type a customer question..." />
+            <button class="send-btn" id="sendBtn" onclick="sendMsg()" style="background:var(--accent)">Send →</button>
+          </div>
+        </div>
+
+        <div class="alert-notif" id="alertPreview" style="display:none">
+          <span style="font-size:1.2rem">🔔</span>
+          <div class="alert-body">
+            <div class="alert-title">Alert — High Intent Lead</div>
+            <div class="alert-msg" id="alertMsg">A customer is asking about pricing on your chatbot.</div>
+            <div class="alert-time">Just now · via ask.veyza</div>
+            <div class="alert-actions">
+              <button class="alert-btn alert-btn-call">Call Now</button>
+              <button class="alert-btn alert-btn-later">Remind later</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-profile" id="customerProfile" style="display:none">
+          <div class="cp-header">
+            <div class="cp-title">Customer Profile</div>
+            <div class="cp-badge" id="cpBadge">New Lead</div>
+          </div>
+          <div class="cp-person">
+            <div class="cp-avatar" id="cpAvatar" style="background:rgba(0,229,160,.15);color:var(--accent)">?</div>
+            <div><div class="cp-name" id="cpName">Visitor</div><div class="cp-since">Chatting now</div></div>
+          </div>
+          <div class="cp-stats">
+            <div class="cp-stat"><div class="cp-stat-val" id="cpMsgs" style="color:var(--accent)">0</div><div class="cp-stat-lbl">Messages</div></div>
+            <div class="cp-stat"><div class="cp-stat-val" id="cpScore" style="color:var(--gold)">Low</div><div class="cp-stat-lbl">Intent</div></div>
+            <div class="cp-stat"><div class="cp-stat-val" style="color:var(--blue)">New</div><div class="cp-stat-lbl">Status</div></div>
+          </div>
+          <div class="cp-history">
+            <div class="cp-hist-item"><span class="cp-hist-label">Asked about</span><span class="cp-hist-val" id="cpTopic" style="color:var(--muted)">—</span></div>
+            <div class="cp-hist-item"><span class="cp-hist-label">Alert sent</span><span class="cp-hist-val" id="cpAlert" style="color:var(--muted)">No</span></div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-label">Messages</div><div class="stat-val" id="statMsgs" style="color:var(--accent)">0</div><div class="stat-sub">this session</div></div>
+          <div class="stat-card"><div class="stat-label">Intent</div><div class="stat-val" id="statIntent" style="color:var(--gold)">Browsing</div><div class="stat-sub">auto-detected</div></div>
+          <div class="stat-card"><div class="stat-label">Response</div><div class="stat-val" style="color:var(--blue)">&lt;1s</div><div class="stat-sub">always instant</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FINAL CTA -->
+<div class="shell">
+  <section class="final-cta">
+    <div class="cta-inner reveal">
+      <div class="eyebrow">Ready to go live?</div>
+      <h2>Get your chatbot live today.</h2>
+      <p>Takes 5 minutes to set up. Your AI assistant starts capturing leads and answering customers immediately.</p>
+      <div class="cta-btns">
+        <a class="btn-a" href="https://buy.stripe.com/5kQ00bdF68Gwg3b5Sw5sA01" target="_blank">Get Started — $49/mo →</a>
+        <a class="btn-b" href="waitlist.html">Join the Waitlist</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="shell">
+    <div class="foot-inner">
+      <a class="brand" href="index.html" style="font-size:1rem"><div class="brand-ico" style="width:26px;height:26px;font-size:.78rem">🤖</div>ask<span class="brand-dot">.</span>veyza</a>
+      <div class="foot-links"><a href="index.html">Home</a><a href="pricing.html">Pricing</a><a href="waitlist.html">Waitlist</a><a href="scanner-report.html">Free Scan</a></div>
+      <span class="foot-copy">© 2026 ask.veyza</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const nav = document.getElementById('navMenu');
+  menuBtn.addEventListener('click', () => { nav.classList.toggle('open'); menuBtn.textContent = nav.classList.contains('open') ? '✕' : '☰'; });
+
+  function switchTab(name, btn) {
+    document.querySelectorAll('.panel-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function goStep(n) {
+    const tabs = ['business','design','alerts','profile'];
+    const btns = document.querySelectorAll('.ptab');
+    document.querySelectorAll('.panel-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabs[n-1]).classList.add('active');
+    btns[n-1].classList.add('active');
+    for(let i=1;i<=4;i++){
+      const c=document.getElementById('sc'+i),l=document.getElementById('sl'+i);
+      if(i<n){c.classList.add('done');c.classList.remove('active');c.textContent='✓';l.classList.remove('active')}
+      else if(i===n){c.classList.add('active');c.classList.remove('done');c.textContent=i;l.classList.add('active')}
+      else{c.classList.remove('active','done');c.textContent=i;l.classList.remove('active')}
+    }
+    for(let i=1;i<=3;i++){const line=document.getElementById('sl'+i+(i+1));if(line){if(i<n)line.classList.add('done');else line.classList.remove('done');}}
+  }
+
+  let state = { color: '#00e5a0', emoji: '🤖' };
+
+  function pickColor(el) {
+    document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    state.color = el.dataset.color;
+    document.getElementById('botAvatar').style.background = state.color + '22';
+    document.getElementById('sendBtn').style.background = state.color;
+    document.querySelectorAll('.msg.user .msg-bubble').forEach(b => b.style.background = state.color);
+  }
+
+  function pickEmoji(el) {
+    document.querySelectorAll('#emojiPicker div').forEach(o => o.style.borderColor = 'var(--border2)');
+    el.style.borderColor = state.color;
+    state.emoji = el.dataset.emoji;
+    document.getElementById('botAvatar').textContent = state.emoji;
+  }
+
+  function applyBusiness() {
+    const name = document.getElementById('bizName').value || document.getElementById('bizType').value + ' Assistant';
+    document.getElementById('chatBotName').textContent = name;
+    resetChat();
+    goStep(2);
+  }
+
+  function applyDesign() { goStep(3); }
+
+  function applyAlerts() {
+    const phone = document.getElementById('alertPhone').value;
+    document.getElementById('alertPhonePreview').style.display = phone ? 'block' : 'none';
+    goStep(4);
+  }
+
+  function updateAlertPreview() {
+    const phone = document.getElementById('alertPhone').value;
+    document.getElementById('alertPhonePreview').style.display = phone ? 'block' : 'none';
+  }
+
+  function updatePreview() {
+    const name = document.getElementById('bizName').value || document.getElementById('bizType').value + ' Assistant';
+    document.getElementById('chatBotName').textContent = name;
+  }
+
+  let totalMsgs = 0;
+  const responses = {
+    'pric':["Our services are competitively priced! Want me to send you our full pricing list? 💰","Great question! I'd love to walk you through our packages. What service are you interested in?"],
+    'book':["Let's get you booked! 📅 We have availability this week. What day works best?","I'd love to help you schedule! What service and time works for you?"],
+    'serv':["We offer a range of services to fit your needs! Want me to walk you through what we do? ✨","Great question! Which area interests you most?"],
+    'hour':["We're open Monday–Friday 9am–6pm and Saturday 10am–4pm! 🕐 Want to book a visit?","Our doors are open most of the week. Want to schedule a time?"],
+    'owner':["I'll get the owner on this right away! 📞 What's your name and best number to reach you?","Connecting you with the owner now! What's your contact info?"],
+    'hello':["Hi there! Welcome! How can I help you today? 😊","Hello! Great to see you. What can I help with?"],
+    'default':["Thanks for reaching out! Could you tell me a bit more so I can help? 😊","Great question! What specifically can I assist you with today?"]
+  };
+
+  function getBotReply(text) {
+    const t = text.toLowerCase();
+    for(const key in responses){if(key!=='default'&&t.includes(key)){const a=responses[key];return a[Math.floor(Math.random()*a.length)];}}
+    const a=responses['default'];return a[Math.floor(Math.random()*a.length)];
+  }
+
+  function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+
+  function addMsg(text,type){
+    const c=document.getElementById('chatMessages');
+    const d=document.createElement('div');d.className='msg '+type;
+    const b=document.createElement('div');b.className='msg-bubble';b.textContent=text;
+    if(type==='user'){b.style.background=state.color;b.style.color='#040d09';}
+    const t=document.createElement('div');t.className='msg-time';t.textContent=now();
+    d.appendChild(b);d.appendChild(t);c.appendChild(d);c.scrollTop=c.scrollHeight;
+  }
+
+  function showTyping(){const c=document.getElementById('chatMessages');const d=document.createElement('div');d.className='typing';d.id='typingEl';d.innerHTML='<span></span><span></span><span></span>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
+  function hideTyping(){const t=document.getElementById('typingEl');if(t)t.remove();}
+
+  function updateStats(text){
+    totalMsgs++;
+    document.getElementById('statMsgs').textContent=totalMsgs;
+    document.getElementById('cpMsgs').textContent=totalMsgs;
+    document.getElementById('customerProfile').style.display='block';
+    const t=text.toLowerCase();
+    let intent='Browsing',topic='—';
+    if(t.includes('pric')||t.includes('cost')||t.includes('book')){intent='High Intent';topic='Pricing / Booking';}
+    else if(totalMsgs>=2){intent='Interested';topic='General inquiry';}
+    document.getElementById('statIntent').textContent=intent;
+    document.getElementById('statIntent').style.color=intent==='High Intent'?'var(--accent)':intent==='Interested'?'var(--gold)':'var(--muted)';
+    document.getElementById('cpScore').textContent=intent;
+    document.getElementById('cpScore').style.color=intent==='High Intent'?'var(--accent)':'var(--gold)';
+    document.getElementById('cpTopic').textContent=topic;
+    document.getElementById('cpBadge').textContent=intent==='High Intent'?'🔥 Hot Lead':'New Lead';
+    if(intent==='High Intent'){
+      document.getElementById('alertPreview').style.display='flex';
+      document.getElementById('alertMsg').textContent='A customer is asking about '+topic.toLowerCase()+'. They may be ready to book!';
+      document.getElementById('cpAlert').textContent='Yes ✓';
+      document.getElementById('cpAlert').style.color='var(--accent)';
+    }
+    const m=text.match(/(?:i'?m|my name is|call me|this is)\s+([A-Z][a-z]+)/i);
+    if(m){document.getElementById('cpName').textContent=m[1];document.getElementById('cpAvatar').textContent=m[1][0];}
+  }
+
+  function sendMsg(){
+    const input=document.getElementById('chatInput');
+    const text=input.value.trim();if(!text)return;
+    addMsg(text,'user');updateStats(text);input.value='';
+    showTyping();setTimeout(()=>{hideTyping();addMsg(getBotReply(text),'bot');},(700+Math.random()*600));
+  }
+
+  function sendQuick(btn){
+    const text=btn.textContent;addMsg(text,'user');updateStats(text);
+    showTyping();setTimeout(()=>{hideTyping();addMsg(getBotReply(text),'bot');},(700+Math.random()*500));
+  }
+
+  function resetChat(){
+    document.getElementById('chatMessages').innerHTML='';
+    totalMsgs=0;
+    document.getElementById('statMsgs').textContent='0';
+    document.getElementById('statIntent').textContent='Browsing';
+    document.getElementById('customerProfile').style.display='none';
+    document.getElementById('alertPreview').style.display='none';
+    initGreeting();
+  }
+
+  function initGreeting(){
+    const name=document.getElementById('bizName').value||document.getElementById('bizType').value;
+    const custom=document.getElementById('greeting').value;
+    const msg=custom||('Hi! Welcome to '+name+'. How can I help you today? 👋');
+    setTimeout(()=>addMsg(msg,'bot'),400);
+  }
+
+  document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
+
+  // Reveal on scroll
+  const observer=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*60);observer.unobserve(e.target);}});},{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  initGreeting();
+</script>
+</body>
+</html>
