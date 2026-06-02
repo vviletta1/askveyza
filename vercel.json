@@ -1,21 +1,16 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/pricing", "destination": "/pricing.html" },
-    { "source": "/scanner", "destination": "/scanner-report.html" },
-    { "source": "/waitlist", "destination": "/waitlist.html" },
-    { "source": "/demo", "destination": "/demo.html" },
-    { "source": "/how-it-works", "destination": "/how-it-works.html" },
-    { "source": "/success", "destination": "/success.html" },
-    { "source": "/cancel", "destination": "/cancel.html" }
+  "version": 2,
+  "builds": [
+    { "src": "*.html", "use": "@vercel/static" }
   ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
-      ]
-    }
+  "routes": [
+    { "src": "/pricing", "dest": "/pricing.html" },
+    { "src": "/scanner", "dest": "/scanner-report.html" },
+    { "src": "/waitlist", "dest": "/waitlist.html" },
+    { "src": "/demo", "dest": "/demo.html" },
+    { "src": "/how-it-works", "dest": "/how-it-works.html" },
+    { "src": "/success", "dest": "/success.html" },
+    { "src": "/cancel", "dest": "/cancel.html" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
