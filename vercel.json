@@ -1,16 +1,6 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "*.html", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/pricing", "dest": "/pricing.html" },
-    { "src": "/scanner", "dest": "/scanner-report.html" },
-    { "src": "/waitlist", "dest": "/waitlist.html" },
-    { "src": "/demo", "dest": "/demo.html" },
-    { "src": "/how-it-works", "dest": "/how-it-works.html" },
-    { "src": "/success", "dest": "/success.html" },
-    { "src": "/cancel", "dest": "/cancel.html" },
-    { "src": "/(.*)", "dest": "/$1" }
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/$1.html" }
   ]
 }
