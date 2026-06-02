@@ -1,130 +1,244 @@
-<!doctype html>
-<html lang="en" data-page="pricing">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AskVeyza | Pricing</title>
-    <meta name="description" content="Concise, value-focused pricing for businesses that want better response speed and more lead opportunities." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body class="page">
-    <header class="site-header">
-      <div class="container nav-wrap">
-        <a class="brand" href="index.html"><span class="brand-mark">◎</span><span class="brand-name">AskVeyza</span></a>
-        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Toggle navigation">☰</button>
-        <nav class="nav" id="navMenu">
-          <a data-nav="home" href="index.html">Home</a>
-          <a data-nav="how" href="how-it-works.html">How It Works</a>
-          <a data-nav="pricing" href="pricing.html">Pricing</a>
-          <a data-nav="demo" href="demo.html">Demo</a>
-          <a data-nav="waitlist" href="waitlist.html">Waitlist</a>
-        </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ask.veyza | Pricing</title>
+  <meta name="description" content="Simple, affordable plans for small businesses. Start free — no credit card required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#07090e;--bg2:#0d1018;--bg3:#13171f;--bg4:#191e28;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.2);--text:#eef0f8;--muted:rgba(238,240,248,0.55);--muted2:rgba(238,240,248,0.3);--accent:#00e5a0;--accent-dim:rgba(0,229,160,0.1);--accent-border:rgba(0,229,160,0.22);--gold:#f5c842;--blue:#4d9fff;--red:#f87171;--max:1100px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0;mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,black 10%,transparent 75%)}
+    .orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+    .o1{width:500px;height:500px;background:#00e5a0;top:-200px;left:-150px;opacity:.12}
+    .o2{width:400px;height:400px;background:#4d9fff;top:100px;right:-150px;opacity:.08}
+    .hdr{position:sticky;top:0;z-index:100;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;background:rgba(7,9,14,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--text);font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+    .brand-ico{width:30px;height:30px;background:var(--accent);border-radius:8px;display:grid;place-items:center;font-size:.85rem;flex-shrink:0}
+    .brand-dot{color:var(--accent)}
+    nav{display:flex;align-items:center;gap:1.75rem}
+    nav a{color:var(--muted);text-decoration:none;font-size:.87rem;font-weight:500;transition:color .2s}
+    nav a:hover{color:var(--text)}
+    .nav-cta{background:var(--accent);color:#040d09!important;font-weight:700!important;padding:.45rem 1rem;border-radius:8px;font-size:.84rem!important}
+    .menu-btn{display:none;background:none;border:1px solid var(--border2);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem}
+    .shell{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 1.5rem}
+    .page-hero{padding:4rem 0 3rem;text-align:center}
+    .eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:.75rem}
+    .page-hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:.75rem}
+    .page-hero p{font-size:1rem;color:var(--muted);max-width:480px;margin:0 auto;line-height:1.7;font-weight:300}
+    .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:3rem}
+    .pcard{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2rem;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;position:relative}
+    .pcard:hover{border-color:var(--border2);transform:translateY(-3px)}
+    .pcard.featured{background:var(--bg3);border-color:var(--accent-border);box-shadow:0 0 0 1px rgba(0,229,160,.08),0 24px 60px rgba(0,0,0,.35)}
+    .popular-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--accent);color:#040d09;font-size:.72rem;font-weight:800;padding:.3rem .9rem;border-radius:999px;white-space:nowrap;letter-spacing:.03em}
+    .plan-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.25rem}
+    .plan-desc{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.5}
+    .plan-price{display:flex;align-items:baseline;gap:.3rem;margin-bottom:.4rem}
+    .plan-price strong{font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;letter-spacing:-.06em;line-height:1}
+    .plan-price span{font-size:.88rem;color:var(--muted)}
+    .plan-compare{font-size:.75rem;color:var(--muted2);padding:.35rem .65rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;margin-bottom:1.5rem;display:inline-block}
+    .plan-compare s{color:var(--red)}.plan-compare strong{color:var(--accent)}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem;flex:1}
+    .plan-features li{display:flex;align-items:flex-start;gap:.6rem;font-size:.875rem;color:var(--muted);line-height:1.5}
+    .plan-features li::before{content:'✓';color:var(--accent);font-weight:700;font-size:.75rem;flex-shrink:0;margin-top:.15rem}
+    .plan-divider{height:1px;background:var(--border);margin-bottom:1.25rem}
+    .plan-btn{display:block;text-align:center;padding:.75rem;border-radius:11px;font-weight:700;font-size:.9rem;text-decoration:none;transition:opacity .2s,transform .1s;font-family:'DM Sans',sans-serif}
+    .plan-btn:hover{transform:translateY(-1px)}
+    .btn-outline-plan{border:1px solid var(--border2);color:var(--text);background:none}
+    .btn-outline-plan:hover{border-color:var(--border3)}
+    .btn-solid-plan{background:var(--accent);color:#040d09}
+    .btn-solid-plan:hover{opacity:.88}
+    .compare-wrap{margin-bottom:4rem}
+    .compare-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.25rem;text-align:center}
+    .ctable{width:100%;border-collapse:collapse}
+    .ctable th{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted2);padding:.7rem 1rem;text-align:left;border-bottom:1px solid var(--border2)}
+    .ctable th:not(:first-child){text-align:center}
+    .ctable td{padding:.8rem 1rem;font-size:.86rem;border-bottom:1px solid var(--border);color:var(--muted)}
+    .ctable td:not(:first-child){text-align:center}
+    .ctable tr:last-child td{border-bottom:none}
+    .ctable td:first-child{color:var(--text);font-weight:500}
+    .tick{color:var(--accent);font-weight:700;font-size:1rem}
+    .cross{color:var(--border2);font-size:1rem}
+    .faq-wrap{max-width:680px;margin:0 auto 4rem}
+    .faq-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:1.5rem}
+    .faq-item{border-bottom:1px solid var(--border);padding:1rem 0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-q{font-size:.92rem;font-weight:600;margin-bottom:.4rem}
+    .faq-a{font-size:.85rem;color:var(--muted);line-height:1.65}
+    .bottom-cta{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:3rem 2rem;text-align:center;margin-bottom:4rem;position:relative;overflow:hidden}
+    .bottom-cta::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(0,229,160,.1),transparent 70%);pointer-events:none}
+    .bottom-cta h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem}
+    .bottom-cta p{color:var(--muted);font-size:.92rem;margin-bottom:1.5rem;font-weight:300}
+    .btn-a{display:inline-flex;align-items:center;gap:.4rem;background:var(--accent);color:#040d09;font-weight:700;font-size:.92rem;padding:.7rem 1.4rem;border-radius:10px;text-decoration:none;transition:opacity .2s}
+    .btn-a:hover{opacity:.88}
+    footer{border-top:1px solid var(--border);padding:2rem 0;position:relative;z-index:1}
+    .foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .foot-links{display:flex;gap:1.5rem}
+    .foot-links a{font-size:.8rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+    .foot-links a:hover{color:var(--muted)}
+    .foot-copy{font-size:.76rem;color:var(--muted2)}
+    @media(max-width:860px){.pgrid{grid-template-columns:1fr;max-width:420px;margin:0 auto 3rem}}
+    @media(max-width:640px){.hdr{padding:0 1rem}nav{display:none}nav.open{display:flex;flex-direction:column;position:fixed;inset:62px 0 0 0;background:var(--bg);padding:2rem;z-index:99;gap:1.25rem}.menu-btn{display:flex;align-items:center;justify-content:center}}
+  </style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<header class="hdr">
+  <a class="brand" href="index.html"><div class="brand-ico">🤖</div>ask<span class="brand-dot">.</span>veyza</a>
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <nav id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="index.html#features">Features</a>
+    <a href="waitlist.html">Waitlist</a>
+    <a href="scanner-report.html" class="nav-cta">Free Scan →</a>
+  </nav>
+</header>
+
+<div class="shell">
+
+  <div class="page-hero">
+    <div class="eyebrow">Pricing</div>
+    <h1>Plans built for real<br/>business budgets.</h1>
+    <p>No long contracts. No hidden fees. Cancel anytime. Start with a free scan — no card required.</p>
+  </div>
+
+  <div class="pgrid">
+
+    <div class="pcard">
+      <div class="plan-name">Starter</div>
+      <div class="plan-desc">For getting your footing online</div>
+      <div class="plan-price"><strong>$29</strong><span>/ month</span></div>
+      <div class="plan-compare">vs. <s>BrightLocal $39/mo</s> — <strong>save $10/mo</strong></div>
+      <ul class="plan-features">
+        <li>Monthly website scan report</li>
+        <li>Basic AI recommendations</li>
+        <li>Basic AI chatbot</li>
+        <li>Lead capture (up to 50/mo)</li>
+        <li>Email support</li>
+      </ul>
+      <div class="plan-divider"></div>
+      <a href="https://buy.stripe.com/fZu9AL1Wo4qg8AJdkY5sA00" target="_blank" class="plan-btn btn-outline-plan">Get Started →</a>
+    </div>
+
+    <div class="pcard featured">
+      <div class="popular-badge">⭐ Most Popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-desc">For growing your customer base</div>
+      <div class="plan-price"><strong>$49</strong><span>/ month</span></div>
+      <div class="plan-compare">vs. <s>SEMrush $139/mo</s> — <strong>save $90/mo</strong></div>
+      <ul class="plan-features">
+        <li>Full site audit + local SEO score</li>
+        <li>Competitor benchmark report</li>
+        <li>AI chatbot builder</li>
+        <li>Lead capture dashboard</li>
+        <li>Social media caption tools</li>
+        <li>Events &amp; specials board</li>
+        <li>Priority support</li>
+      </ul>
+      <div class="plan-divider"></div>
+      <a href="https://buy.stripe.com/5kQ00bdF68Gwg3b5Sw5sA01" target="_blank" class="plan-btn btn-solid-plan">Get Started →</a>
+    </div>
+
+    <div class="pcard">
+      <div class="plan-name">Pro</div>
+      <div class="plan-desc">For scaling businesses</div>
+      <div class="plan-price"><strong>$99</strong><span>/ month</span></div>
+      <div class="plan-compare">vs. <s>Broadly $199/mo</s> — <strong>save $100/mo</strong></div>
+      <ul class="plan-features">
+        <li>Everything in Growth</li>
+        <li>Custom branded reports</li>
+        <li>Traffic recommendations</li>
+        <li>Conversion tracking</li>
+        <li>Monthly strategy call</li>
+        <li>Multi-location support</li>
+      </ul>
+      <div class="plan-divider"></div>
+      <a href="https://buy.stripe.com/4gMeV59oQ3mc18h3Ko5sA02" target="_blank" class="plan-btn btn-outline-plan">Get Started →</a>
+    </div>
+
+  </div>
+
+  <div class="compare-wrap">
+    <div class="compare-title">What's included in each plan</div>
+    <table class="ctable">
+      <thead><tr><th>Feature</th><th>Starter</th><th>Growth</th><th>Pro</th></tr></thead>
+      <tbody>
+        <tr><td>Website scan report</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td>AI recommendations</td><td>Basic</td><td>Full</td><td>Full</td></tr>
+        <tr><td>Local SEO score</td><td class="cross">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td>Competitor benchmark</td><td class="cross">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td>AI chatbot builder</td><td>Basic</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td>Lead capture</td><td>50/mo</td><td>Unlimited</td><td>Unlimited</td></tr>
+        <tr><td>Social media tools</td><td class="cross">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td>Events &amp; specials board</td><td class="cross">—</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td>Custom branded reports</td><td class="cross">—</td><td class="cross">—</td><td class="tick">✓</td></tr>
+        <tr><td>Monthly strategy call</td><td class="cross">—</td><td class="cross">—</td><td class="tick">✓</td></tr>
+        <tr><td>Support</td><td>Email</td><td>Priority</td><td>Priority + Call</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="faq-wrap">
+    <div class="faq-title">Common questions</div>
+    <div class="faq-item">
+      <div class="faq-q">Do I need a credit card to start?</div>
+      <div class="faq-a">No. You can run a free website scan without any account or payment. You only need a card when you choose a plan.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel anytime?</div>
+      <div class="faq-a">Yes — cancel anytime with no penalties. Your plan stays active until the end of the billing period.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Does it work on StyleSeat or Vagaro?</div>
+      <div class="faq-a">Yes. Our scanner works on any URL — StyleSeat, Vagaro, Square, Wix, Squarespace, and your own website.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I upgrade or downgrade?</div>
+      <div class="faq-a">Yes, change your plan anytime through your billing portal. Changes take effect on your next billing cycle.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What's the difference vs. SEMrush?</div>
+      <div class="faq-a">SEMrush costs $139–$499/month and is built for large marketing teams. ask.veyza is built for small local businesses, includes an AI chatbot, and starts at $29/month.</div>
+    </div>
+  </div>
+
+  <div class="bottom-cta">
+    <h2>Not sure yet? Start free.</h2>
+    <p>Run a free scan on your website right now — no account needed. See your score in 30 seconds.</p>
+    <a class="btn-a" href="scanner-report.html">Scan My Website Free →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="shell">
+    <div class="foot-inner">
+      <a class="brand" href="index.html" style="font-size:1rem"><div class="brand-ico" style="width:26px;height:26px;font-size:.78rem">🤖</div>ask<span class="brand-dot">.</span>veyza</a>
+      <div class="foot-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Features</a>
+        <a href="waitlist.html">Waitlist</a>
+        <a href="scanner-report.html">Free Scan</a>
       </div>
-    </header>
+      <span class="foot-copy">© 2026 ask.veyza</span>
+    </div>
+  </div>
+</footer>
 
-    <main class="page-shell">
-      <section class="section">
-        <div class="container">
-          <p class="kicker">Pricing</p>
-          <h1 class="page-title">Simple plans for chat, leads, and owner escalation</h1>
-          <p class="copy">Choose the plan that matches your lead volume and follow-up needs.</p>
-
-          <div class="grid-3">
-            <article class="card plan lift">
-              <p class="plan-badge">Best for simple websites</p>
-              <h3>Starter</h3>
-              <p class="price">$49<span>/mo</span></p>
-              <p class="plan-note">Best for simple service websites.</p>
-              <ul>
-                <li>AI Q&A for website visitors</li>
-                <li>Quick actions for common intents</li>
-                <li>Basic inquiry capture</li>
-              </ul>
-              <a class="btn btn-outline" href="https://buy.stripe.com/fZu9AL1Wo4qg8AJdkY5sA00" target="_blank">Get Started</a>
-            </article>
-
-            <article class="card plan featured lift">
-              <p class="plan-badge">Best for booking growth</p>
-              <h3>Growth</h3>
-              <p class="price">$99<span>/mo</span></p>
-              <p class="plan-note">Best for lead and booking growth.</p>
-              <ul>
-                <li>Everything in Starter</li>
-                <li>Lead capture + callback routing</li>
-                <li>Conversion-focused booking prompts</li>
-                <li>Owner text alerts for escalated conversations</li>
-              </ul>
-              <a class="btn btn-primary" href="https://buy.stripe.com/5kQ00bdF68Gwg3b5Sw5sA01" target="_blank">Get Started →</a>
-            </article>
-
-            <article class="card plan lift">
-              <p class="plan-badge">Best for scaling teams</p>
-              <h3>Pro</h3>
-              <p class="price">$149<span>/mo</span></p>
-              <p class="plan-note">Best for high-volume teams and multi-location workflows.</p>
-              <ul>
-                <li>Everything in Growth</li>
-                <li>Advanced owner alerts + call escalation</li>
-                <li>Transcript summaries + urgent flow routing</li>
-                <li>Performance summary insights</li>
-              </ul>
-              <a class="btn btn-outline" href="https://buy.stripe.com/4gMeV59oQ3mc18h3Ko5sA02" target="_blank">Get Started</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-sm">
-        <div class="container roi-wrap">
-          <article class="card roi">
-            <h3>Why businesses pay for this</h3>
-            <ul>
-              <li>One missed lead can cost more than one month of software.</li>
-              <li>Fast replies keep high-intent visitors from bouncing.</li>
-              <li>Owner alerts improve follow-up when AI needs backup.</li>
-            </ul>
-          </article>
-
-          <article class="card roi-compare">
-            <h3>Traffic outcome comparison</h3>
-            <div class="roi-columns">
-              <div class="roi-col">
-                <h4>Without chatbot</h4>
-                <ul>
-                  <li>Missed questions</li>
-                  <li>Slower response path</li>
-                  <li>Lower lead capture</li>
-                </ul>
-              </div>
-              <div class="roi-col">
-                <h4>With AskVeyza</h4>
-                <ul>
-                  <li>Immediate guidance</li>
-                  <li>Structured lead capture</li>
-                  <li>Escalation when human help is needed</li>
-                </ul>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-row">
-        <span>© 2026 AskVeyza</span>
-        <nav>
-          <a href="index.html">Home</a>
-          <a href="how-it-works.html">How It Works</a>
-          <a href="demo.html">Demo</a>
-          <a href="waitlist.html">Waitlist</a>
-        </nav>
-      </div>
-    </footer>
-
-    <script src="script.js"></script>
-  </body>
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const nav = document.getElementById('navMenu');
+  menuBtn.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    menuBtn.textContent = nav.classList.contains('open') ? '✕' : '☰';
+  });
+</script>
+</body>
 </html>
