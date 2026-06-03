@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ask.veyza | Weekly Growth Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#07090e;--bg2:#0d1018;--bg3:#13171f;--bg4:#191e28;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.2);--text:#eef0f8;--muted:rgba(238,240,248,0.55);--muted2:rgba(238,240,248,0.3);--accent:#00e5a0;--accent-dim:rgba(0,229,160,0.1);--accent-border:rgba(0,229,160,0.22);--gold:#f5c842;--blue:#4d9fff;--red:#f87171;--max:720px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0;mask-image:radial-gradient(ellipse 90% 55% at 50% 0%,black 10%,transparent 75%)}
+    .orb{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
+    .o1{width:400px;height:400px;background:#00e5a0;top:-150px;left:-100px;opacity:.1}
+    .o2{width:350px;height:350px;background:#4d9fff;bottom:10%;right:-100px;opacity:.07}
+
+    .hdr{position:sticky;top:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;background:rgba(7,9,14,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--text);font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;letter-spacing:-.02em}
+    .brand-ico{width:26px;height:26px;background:var(--accent);border-radius:7px;display:grid;place-items:center;font-size:.75rem}
+    .brand-dot{color:var(--accent)}
+    .share-btn{display:flex;align-items:center;gap:.4rem;background:var(--bg2);border:1px solid var(--border2);color:var(--muted);padding:.35rem .85rem;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .share-btn:hover{border-color:var(--accent-border);color:var(--accent)}
+
+    .shell{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+    /* REPORT HEADER */
+    .report-head{text-align:center;padding:2rem 0 1.75rem;border-bottom:1px solid var(--border);margin-bottom:1.75rem}
+    .report-biz{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.25rem}
+    .report-url{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted2);margin-bottom:.75rem}
+    .report-week{display:inline-flex;align-items:center;gap:.4rem;background:var(--bg2);border:1px solid var(--border2);padding:.3rem .85rem;border-radius:999px;font-size:.75rem;color:var(--muted);font-weight:600}
+    .report-week-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* BIG SCORE */
+    .score-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
+    .score-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center}
+    .score-card.main{border-color:var(--accent-border);background:linear-gradient(145deg,rgba(0,229,160,.06),var(--bg2))}
+    .sc-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);margin-bottom:.4rem}
+    .sc-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.04em;line-height:1}
+    .sc-change{font-size:.72rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;display:inline-block;margin-top:.3rem}
+    .up{background:rgba(0,229,160,.1);color:var(--accent)}
+    .down{background:rgba(248,113,113,.1);color:var(--red)}
+    .flat{background:rgba(255,255,255,.06);color:var(--muted2)}
+
+    /* WHAT IT MEANS */
+    .plain-box{background:linear-gradient(135deg,rgba(0,229,160,.06),rgba(0,229,160,.02));border:1px solid var(--accent-border);border-radius:14px;padding:1.25rem 1.4rem;margin-bottom:1.5rem}
+    .plain-box-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.5rem}
+    .plain-box-text{font-size:.95rem;color:var(--text);line-height:1.65;font-weight:400}
+
+    /* THIS WEEK'S ONE TASK */
+    .task-box{background:var(--bg2);border:1px solid var(--gold);border-left:4px solid var(--gold);border-radius:14px;padding:1.25rem 1.4rem;margin-bottom:1.5rem;display:flex;gap:1rem;align-items:flex-start}
+    .task-icon{font-size:1.4rem;flex-shrink:0}
+    .task-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:.3rem}
+    .task-title{font-size:1rem;font-weight:700;margin-bottom:.3rem;font-family:'Syne',sans-serif}
+    .task-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+    .task-effort{display:inline-flex;align-items:center;gap:.3rem;margin-top:.5rem;font-size:.72rem;font-weight:600;color:var(--gold)}
+
+    /* METRICS GRID */
+    .metrics-section{margin-bottom:1.5rem}
+    .metrics-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);margin-bottom:.75rem}
+    .metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+    .metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem}
+    .metric-label{font-size:.72rem;color:var(--muted2);font-weight:600;margin-bottom:.25rem}
+    .metric-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+    .metric-sub{font-size:.72rem;color:var(--muted2);margin-top:.2rem}
+    .metric-bar{height:4px;background:var(--bg3);border-radius:99px;margin-top:.5rem;overflow:hidden}
+    .metric-bar-fill{height:100%;border-radius:99px;transition:width 1s ease}
+
+    /* ISSUES LIST */
+    .issues-section{margin-bottom:1.5rem}
+    .issues-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);margin-bottom:.75rem}
+    .issue-item{display:flex;gap:.75rem;align-items:flex-start;padding:.8rem .9rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:.5rem}
+    .issue-item:last-child{margin-bottom:0}
+    .issue-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:.3rem}
+    .issue-body{}
+    .issue-title{font-size:.85rem;font-weight:600;margin-bottom:.15rem}
+    .issue-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+    .issue-impact{font-size:.68rem;font-weight:700;margin-top:.3rem;color:var(--muted2)}
+
+    /* WINS */
+    .wins-section{margin-bottom:1.5rem}
+    .win-item{display:flex;gap:.75rem;align-items:center;padding:.7rem .9rem;background:rgba(0,229,160,.04);border:1px solid var(--accent-border);border-radius:10px;margin-bottom:.4rem;font-size:.85rem}
+    .win-icon{font-size:1rem;flex-shrink:0}
+    .win-text{color:var(--text)}
+
+    /* BEFORE AFTER */
+    .before-after{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:1.5rem}
+    .ba-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted2);margin-bottom:.9rem}
+    .ba-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.5rem}
+    .ba-row:last-child{margin-bottom:0}
+    .ba-label{font-size:.72rem;color:var(--muted2);margin-bottom:.2rem;font-weight:600}
+    .ba-val{font-size:.85rem;font-weight:600;padding:.35rem .65rem;border-radius:7px}
+    .ba-before{background:rgba(248,113,113,.07);color:var(--red)}
+    .ba-after{background:rgba(0,229,160,.07);color:var(--accent)}
+
+    /* SHARE CTA */
+    .share-cta{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.4rem;text-align:center;margin-bottom:1.5rem}
+    .share-cta h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.3rem}
+    .share-cta p{font-size:.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.55}
+    .share-btns{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+    .sbtn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .9rem;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:opacity .2s}
+    .sbtn:hover{opacity:.85}
+    .sbtn-copy{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+    .sbtn-upgrade{background:var(--accent);color:#040d09}
+
+    /* BRANDING */
+    .report-footer{text-align:center;padding-top:1.5rem;border-top:1px solid var(--border)}
+    .report-footer p{font-size:.75rem;color:var(--muted2);margin-bottom:.4rem}
+    .report-footer a{color:var(--accent);text-decoration:none;font-weight:600}
+
+    @media(max-width:500px){.score-row{grid-template-columns:1fr 1fr}.metrics-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div>
+
+<header class="hdr">
+  <a class="brand" href="index.html"><div class="brand-ico">🤖</div>ask<span class="brand-dot">.</span>veyza</a>
+  <button class="share-btn" onclick="copyReport()">📤 Share Report</button>
+</header>
+
+<div class="shell">
+
+  <!-- REPORT HEADER -->
+  <div class="report-head">
+    <div class="report-biz" id="bizName">Your Business Name</div>
+    <div class="report-url" id="bizUrl">yourbusiness.com</div>
+    <div class="report-week"><span class="report-week-dot"></span> Week of <span id="weekDate"></span></div>
+  </div>
+
+  <!-- SCORES -->
+  <div class="score-row">
+    <div class="score-card main">
+      <div class="sc-label">Overall Score</div>
+      <div class="sc-val" id="overallScore" style="color:var(--accent)">--</div>
+      <div class="sc-change up" id="overallChange">+0 this week</div>
+    </div>
+    <div class="score-card">
+      <div class="sc-label">Site Health</div>
+      <div class="sc-val" id="healthScore" style="color:var(--blue)">--</div>
+      <div class="sc-change flat" id="healthChange">no change</div>
+    </div>
+    <div class="score-card">
+      <div class="sc-label">Local SEO</div>
+      <div class="sc-val" id="localScore" style="color:var(--gold)">--</div>
+      <div class="sc-change up" id="localChange">+0 this week</div>
+    </div>
+  </div>
+
+  <!-- WHAT IT MEANS IN PLAIN ENGLISH -->
+  <div class="plain-box">
+    <div class="plain-box-label">What this means for your business</div>
+    <div class="plain-box-text" id="plainEnglish">Run a scan on your site to get your personalized weekly report.</div>
+  </div>
+
+  <!-- THIS WEEK'S ONE TASK -->
+  <div class="task-box">
+    <span class="task-icon">🎯</span>
+    <div>
+      <div class="task-label">Your one task this week</div>
+      <div class="task-title" id="taskTitle">Run your first scan to get started</div>
+      <div class="task-desc" id="taskDesc">Enter your website URL in the scanner to get your first personalized task — one specific thing ranked by the biggest impact on your business.</div>
+      <div class="task-effort">⏱ Est. time: <span id="taskTime">5 minutes</span></div>
+    </div>
+  </div>
+
+  <!-- KEY METRICS -->
+  <div class="metrics-section">
+    <div class="metrics-title">Key metrics this week</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Issues found</div>
+        <div class="metric-val" id="issueCount" style="color:var(--red)">--</div>
+        <div class="metric-sub" id="issueChange">run scan to see</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="issueBar" style="width:0%;background:var(--red)"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Checks passed</div>
+        <div class="metric-val" id="passCount" style="color:var(--accent)">--</div>
+        <div class="metric-sub" id="passChange">run scan to see</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="passBar" style="width:0%;background:var(--accent)"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">vs. competitors</div>
+        <div class="metric-val" id="compScore" style="color:var(--gold)">--</div>
+        <div class="metric-sub">local benchmark</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="compBar" style="width:0%;background:var(--gold)"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Performance</div>
+        <div class="metric-val" id="perfScore" style="color:var(--blue)">--</div>
+        <div class="metric-sub">site speed score</div>
+        <div class="metric-bar"><div class="metric-bar-fill" id="perfBar" style="width:0%;background:var(--blue)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP ISSUES -->
+  <div class="issues-section" id="issuesSection" style="display:none">
+    <div class="issues-title">Top issues to fix</div>
+    <div id="issuesList"></div>
+  </div>
+
+  <!-- WINS -->
+  <div class="wins-section" id="winsSection" style="display:none">
+    <div class="issues-title">What's working ✓</div>
+    <div id="winsList"></div>
+  </div>
+
+  <!-- BEFORE / AFTER -->
+  <div class="before-after" id="beforeAfter" style="display:none">
+    <div class="ba-title">Before ask.veyza vs. Now</div>
+    <div id="baContent"></div>
+  </div>
+
+  <!-- SCAN BUTTON -->
+  <div style="text-align:center;margin-bottom:1.5rem" id="scanPrompt">
+    <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Paste your URL to generate your personalized report</p>
+    <div style="display:flex;gap:.5rem;max-width:420px;margin:0 auto">
+      <input id="reportUrl" type="url" placeholder="https://yourbusiness.com" style="flex:1;height:44px;background:var(--bg2);border:1px solid var(--border2);border-radius:9px;color:var(--text);padding:0 1rem;font-family:'DM Mono',monospace;font-size:.85rem;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'" />
+      <button onclick="generateReport()" style="height:44px;padding:0 1.1rem;background:var(--accent);color:#040d09;font-weight:700;font-size:.88rem;border:none;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Generate →</button>
+    </div>
+  </div>
+
+  <!-- SHARE CTA -->
+  <div class="share-cta">
+    <h3>Share this report</h3>
+    <p>Send this to your business partner, spouse, or investor — written in plain English anyone can understand.</p>
+    <div class="share-btns">
+      <button class="sbtn sbtn-copy" onclick="copyReport()">📋 Copy report link</button>
+      <a class="sbtn sbtn-upgrade" href="pricing.html">Get weekly reports — $49/mo →</a>
+    </div>
+  </div>
+
+  <div class="report-footer">
+    <p>Generated by <a href="index.html">ask.veyza</a> · Plain-English website insights for small businesses</p>
+    <p style="margin-top:.25rem">No jargon. No confusion. Just what matters for your business.</p>
+  </div>
+
+</div>
+
+<script>
+  // Set week date
+  const now = new Date();
+  const weekStr = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  document.getElementById('weekDate').textContent = weekStr;
+
+  // Plain English explanations by score range
+  function getPlainEnglish(score, issues, passes) {
+    if (score >= 80) return `Your site is in great shape — scoring ${score}/100. You're ahead of most local competitors. Focus this week on getting more reviews online and making sure your booking process is as easy as possible.`;
+    if (score >= 65) return `Your site scores ${score}/100 — above the local average of 52. You have a solid foundation, but ${issues} things are quietly costing you customers. The good news: most are quick fixes that don't require a developer.`;
+    if (score >= 45) return `Your site scores ${score}/100 — below the local average. Customers are finding you, but some are leaving before they contact you. Fixing the top issues this week could directly increase your calls and bookings.`;
+    return `Your site scores ${score}/100, which means it's likely losing you customers every day. This isn't unusual — 67% of small business websites score below 55. The good news: the top issues are fixable without a developer, often in under an hour.`;
+  }
+
+  function getTask(issues) {
+    const critical = issues.filter(i => i.severity === 'critical');
+    const warnings = issues.filter(i => i.severity === 'warning');
+    if (critical.length > 0) {
+      return { title: critical[0].title, desc: critical[0].desc + ' This is your highest-impact fix this week.', time: '15–30 minutes' };
+    }
+    if (warnings.length > 0) {
+      return { title: warnings[0].title, desc: warnings[0].desc + ' This will improve your local search visibility.', time: '30–60 minutes' };
+    }
+    return { title: 'Get 3 new Google reviews', desc: 'Your site is in great shape. The best thing you can do now is ask your last 5 happy customers to leave a Google review. Each one increases your local ranking.', time: '10 minutes' };
+  }
+
+  async function generateReport() {
+    const urlInput = document.getElementById('reportUrl').value.trim();
+    if (!urlInput) return;
+    let url = urlInput;
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+    const btn = document.querySelector('[onclick="generateReport()"]');
+    btn.textContent = 'Scanning...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      renderReport(data, url);
+    } catch (err) {
+      btn.textContent = 'Generate →';
+      btn.disabled = false;
+      alert('Could not scan that URL. Try again.');
+    }
+  }
+
+  function renderReport(data, url) {
+    const domain = (() => { try { return new URL(url).hostname.replace('www.',''); } catch { return url; } })();
+
+    // Header
+    document.getElementById('bizName').textContent = data.pageTitle || domain;
+    document.getElementById('bizUrl').textContent = domain;
+
+    // Scores
+    const score = data.score || 0;
+    const auditScore = data.auditScore || 0;
+    const localScore = data.localScore || 0;
+    const perfScore = data.perfScore || 0;
+    document.getElementById('overallScore').textContent = score;
+    document.getElementById('healthScore').textContent = auditScore;
+    document.getElementById('localScore').textContent = localScore;
+    document.getElementById('overallChange').textContent = score >= 60 ? '↑ Above average' : '↓ Below average';
+    document.getElementById('overallChange').className = 'sc-change ' + (score >= 60 ? 'up' : 'down');
+    document.getElementById('localChange').textContent = localScore >= 50 ? '↑ Good signals' : '↓ Needs work';
+    document.getElementById('localChange').className = 'sc-change ' + (localScore >= 50 ? 'up' : 'down');
+
+    // Plain English
+    const issues = data.audit?.issues || [];
+    const passes = data.audit?.passes || [];
+    document.getElementById('plainEnglish').textContent = getPlainEnglish(score, issues.length, passes.length);
+
+    // Task
+    const task = getTask(issues);
+    document.getElementById('taskTitle').textContent = task.title;
+    document.getElementById('taskDesc').textContent = task.desc;
+    document.getElementById('taskTime').textContent = task.time;
+
+    // Metrics
+    document.getElementById('issueCount').textContent = issues.length;
+    document.getElementById('passCount').textContent = passes.length;
+    document.getElementById('compScore').textContent = score >= 74 ? 'Ahead' : score >= 52 ? 'Average' : 'Behind';
+    document.getElementById('compScore').style.color = score >= 74 ? 'var(--accent)' : score >= 52 ? 'var(--gold)' : 'var(--red)';
+    document.getElementById('perfScore').textContent = perfScore;
+    document.getElementById('issueChange').textContent = issues.length + ' things need attention';
+    document.getElementById('passChange').textContent = passes.length + ' checks passing';
+
+    // Animate bars
+    setTimeout(() => {
+      document.getElementById('issueBar').style.width = Math.min(100, issues.length * 8) + '%';
+      document.getElementById('passBar').style.width = Math.min(100, passes.length * 7) + '%';
+      document.getElementById('compBar').style.width = score + '%';
+      document.getElementById('perfBar').style.width = perfScore + '%';
+    }, 100);
+
+    // Issues list
+    if (issues.length > 0) {
+      const colors = { critical: 'var(--red)', warning: 'var(--gold)', info: 'var(--blue)' };
+      document.getElementById('issuesList').innerHTML = issues.slice(0,4).map(i => `
+        <div class="issue-item">
+          <div class="issue-dot" style="background:${colors[i.severity]||'var(--muted)'}"></div>
+          <div class="issue-body">
+            <div class="issue-title">${i.title}</div>
+            <div class="issue-desc">${i.desc}</div>
+            <div class="issue-impact" style="color:${colors[i.severity]||'var(--muted)'}">
+              ${i.severity === 'critical' ? '🔴 Fix this first' : i.severity === 'warning' ? '🟡 Fix this next' : 'ℹ️ Nice to have'}
+            </div>
+          </div>
+        </div>`).join('');
+      document.getElementById('issuesSection').style.display = 'block';
+    }
+
+    // Wins
+    if (passes.length > 0) {
+      document.getElementById('winsList').innerHTML = passes.slice(0,4).map(p => `
+        <div class="win-item"><span class="win-icon">✓</span><span class="win-text">${p.title}</span></div>`).join('');
+      document.getElementById('winsSection').style.display = 'block';
+    }
+
+    // Before/After
+    const beforeAfterItems = [];
+    if (!data.signals.hasDescription) beforeAfterItems.push(['Meta description', 'Missing — Google rewrites it', 'Added — you control what shows']);
+    if (!data.signals.hasContact) beforeAfterItems.push(['Contact info', 'Not visible', 'Phone + email showing']);
+    if (!data.signals.hasCTA) beforeAfterItems.push(['Call to action', 'No clear next step', '"Book Now" button added']);
+    if (beforeAfterItems.length > 0) {
+      document.getElementById('baContent').innerHTML = beforeAfterItems.map(([label, before, after]) => `
+        <div class="ba-row">
+          <div><div class="ba-label">${label} — Before</div><div class="ba-val ba-before">${before}</div></div>
+          <div><div class="ba-label">${label} — After fixing</div><div class="ba-val ba-after">${after}</div></div>
+        </div>`).join('');
+      document.getElementById('beforeAfter').style.display = 'block';
+    }
+
+    // Hide scan prompt
+    document.getElementById('scanPrompt').style.display = 'none';
+
+    // Store in URL for sharing
+    const shareUrl = new URL(window.location.href);
+    shareUrl.searchParams.set('url', url);
+    shareUrl.searchParams.set('score', score);
+    window.history.replaceState({}, '', shareUrl.toString());
+  }
+
+  function copyReport() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const btn = document.querySelector('.share-btn');
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = orig, 2000);
+    });
+  }
+
+  // Auto-load from URL params
+  const params = new URLSearchParams(window.location.search);
+  const initUrl = params.get('url');
+  if (initUrl) {
+    document.getElementById('reportUrl').value = initUrl;
+    generateReport();
+  }
+
+  document.getElementById('reportUrl').addEventListener('keydown', e => {
+    if (e.key === 'Enter') generateReport();
+  });
+</script>
+</body>
+</html>
