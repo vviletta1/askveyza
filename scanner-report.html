@@ -752,6 +752,9 @@
       <button class="tab-btn" data-tab="local" onclick="switchTab('local',this)">
         Local SEO <span class="tab-count" id="tab-local-count">0</span>
       </button>
+      <button class="tab-btn" data-tab="growth" onclick="switchTab('growth',this)">
+        Growth <span class="tab-count" id="tab-growth-count">0</span>
+      </button>
       <button class="tab-btn" data-tab="competitor" onclick="switchTab('competitor',this)">
         Competitor View
       </button>
@@ -779,6 +782,32 @@
         <div class="section-label">Local SEO recommendations</div>
         <div class="issue-list" id="local-issues"></div>
       </div>
+    </div>
+
+    <!-- TAB: GROWTH -->
+    <div class="tab-panel" id="tab-growth">
+      <!-- 1. Growth score + 2. Lead capture risk + 3. Traffic + 4. Booking/Conversion -->
+      <div class="score-row" id="growth-score-row" style="margin-bottom:1.25rem"></div>
+
+      <!-- 5. Revenue opportunities -->
+      <div class="gap-sm">
+        <div class="section-label">💸 Revenue opportunities</div>
+        <div class="issue-list" id="growth-opportunities"></div>
+      </div>
+
+      <!-- 6. Missing growth signals -->
+      <div class="gap">
+        <div class="section-label" style="margin-top:1.25rem">🔎 Growth signal checks</div>
+        <div class="local-grid" id="growth-checks"></div>
+      </div>
+
+      <div class="gap">
+        <div class="section-label" style="margin-top:1.25rem">⚠ Missing growth signals to fix</div>
+        <div class="issue-list" id="growth-issues"></div>
+      </div>
+
+      <!-- 7 + 8. Solviah recommendation + why it matters -->
+      <div class="data-card" id="growth-solviah" style="margin-top:1.25rem"></div>
     </div>
 
     <!-- TAB: COMPETITOR -->
@@ -927,6 +956,7 @@
     // Tabs
     renderAuditTab(d);
     renderLocalTab(d);
+    renderGrowthTab(d);
     renderCompetitorTab(d);
     renderSignalsTab(d);
 
@@ -1045,6 +1075,107 @@
 
     const issueEl = document.getElementById('local-issues');
     issueEl.innerHTML = issues.map(i => issueCard(i)).join('');
+  }
+
+  // ── GROWTH TAB ──
+  function renderGrowthTab(d) {
+    const g = d.growth || {};
+    const impact = g.impact || {};
+    const checks = g.checks || [];
+    const issues = g.issues || [];
+    const opps = g.opportunities || [];
+    const sub = d.subscription || {};
+
+    document.getElementById('tab-growth-count').textContent = issues.length;
+
+    // 1-4: Growth score + risk cards (reuse score-card styling)
+    const growthScore = d.growthScore ?? g.score ?? 0;
+    const riskCard = (label, level) => {
+      const color = level === 'Low' ? 'var(--green)' : (level === 'Medium' || level === 'Moderate') ? 'var(--yellow)' : 'var(--red)';
+      return `
+        <div class="score-card">
+          <div class="sub-score-label">${esc(label)}</div>
+          <div class="sub-score-num" style="color:${color};font-size:1.4rem;line-height:1.6">${esc(level || 'N/A')}</div>
+          <div class="sub-score-status">${level === 'Low' ? 'Looking good' : 'Worth fixing'}</div>
+        </div>`;
+    };
+
+    document.getElementById('growth-score-row').innerHTML = `
+      <div class="score-card big-score-card">
+        <div class="score-ring-wrap">
+          <svg class="score-ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="score-ring-bg" cx="60" cy="60" r="50" stroke-width="10"/>
+            <circle class="score-ring-fg" id="growth-ring-fg" cx="60" cy="60" r="50" stroke-width="10"
+              stroke="${scoreColor(growthScore)}"
+              stroke-dasharray="${2*Math.PI*50}"
+              stroke-dashoffset="${2*Math.PI*50}"/>
+          </svg>
+          <div class="score-num" style="color:${scoreColor(growthScore)}">${growthScore}</div>
+        </div>
+        <div class="score-label-under">Growth Score</div>
+      </div>
+      ${riskCard('Lead Capture Risk', impact.leadCaptureRisk)}
+      ${riskCard('Traffic Opportunity', impact.trafficVisibilityRisk)}
+      ${riskCard('Booking & Conversion', impact.conversionRisk)}
+    `;
+    setTimeout(() => {
+      const fg = document.getElementById('growth-ring-fg');
+      if (fg) { const c = 2*Math.PI*50; fg.style.strokeDashoffset = c - (growthScore/100)*c; }
+    }, 100);
+
+    // 5: Revenue opportunities
+    const oppEl = document.getElementById('growth-opportunities');
+    oppEl.innerHTML = opps.length
+      ? opps.map(o => `
+        <div class="issue-item">
+          <div class="issue-icon icon-green">$</div>
+          <div class="issue-body"><div class="issue-desc">${esc(o)}</div></div>
+        </div>`).join('')
+      : '<div class="issue-item"><div class="issue-body"><div class="issue-title" style="color:var(--green)">✓ No major revenue gaps detected</div></div></div>';
+
+    // 6a: Growth signal checks (reuse local-card styling)
+    const grid = document.getElementById('growth-checks');
+    grid.innerHTML = checks.map(c => {
+      const ok = c.status === 'ok';
+      const warn = c.status === 'warn';
+      const dotColor = ok ? 'var(--green)' : warn ? 'var(--yellow)' : 'var(--red)';
+      const statusText = ok ? 'Detected' : warn ? 'Could improve' : 'Missing';
+      return `
+        <div class="local-card">
+          <div class="local-card-icon">${c.icon}</div>
+          <div class="local-card-title">${esc(c.title)}</div>
+          <div class="local-card-desc">${esc(c.desc)}</div>
+          <div class="local-status">
+            <span class="status-dot" style="background:${dotColor}"></span>
+            <span style="color:${dotColor}">${statusText}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    // 6b: Missing growth signals (reuse issueCard)
+    const issueEl = document.getElementById('growth-issues');
+    issueEl.innerHTML = issues.length
+      ? issues.map(i => issueCard(i)).join('')
+      : '<div class="issue-item"><div class="issue-body"><div class="issue-title" style="color:var(--green)">✓ No critical growth gaps</div></div></div>';
+
+    // 7 + 8: Solviah Growth Monitoring recommendation + why it matters
+    const fixes = sub.recommendedFixes || [];
+    document.getElementById('growth-solviah').innerHTML = `
+      <div class="data-card-title">🚀 ${esc(sub.planName || 'Solviah Growth Monitoring')} — ${esc(sub.startingPrice || '$49/mo')}</div>
+      <p style="color:var(--muted);font-size:.9rem;line-height:1.6;margin:.5rem 0 .85rem">
+        ${esc(sub.valuePosition || 'Find the gaps that block traffic, leads, bookings, and sales — and monitor them every month.')}
+      </p>
+      <p style="color:var(--text);font-size:.88rem;line-height:1.6;margin-bottom:.85rem">
+        <strong>Why this matters:</strong> ${esc(sub.directTrafficMessage || 'When visitors arrive from Google, Instagram, ads, or referrals, the site should make it easy to understand the offer, trust the business, and book or buy without friction. Every gap above is a place where a ready customer can slip away.')}
+      </p>
+      ${fixes.length ? `
+        <div class="section-label" style="margin:.5rem 0">What Solviah would set up & monitor</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.85rem">
+          ${fixes.map(f => `<span class="issue-pill pill-info">${esc(f)}</span>`).join('')}
+        </div>` : ''}
+      ${sub.agencyComparison ? `<p style="color:var(--muted);font-size:.82rem;margin-bottom:.85rem">💡 ${esc(sub.agencyComparison)}</p>` : ''}
+      <a class="cta-btn" href="waitlist.html">${esc(sub.cta || 'Start monitoring this website for $49/month')} →</a>
+    `;
   }
 
   // ── COMPETITOR TAB ──
