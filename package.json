@@ -2,11 +2,12 @@
   "name": "chatbotv",
   "version": "1.0.0",
   "private": true,
-  "description": "AskVeyza SaaS demo with Stripe Checkout, waitlist, and referral capture",
+  "description": "Ask.Veyza public website and private Owner Studio",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
