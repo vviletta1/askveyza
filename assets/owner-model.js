@@ -2,7 +2,10 @@
  'use strict';
  const uid = () => crypto.randomUUID();
  const emptyScenario = () => ({ visits: '', currentRate: '', targetRate: '', capacity: '', value: '', cost: '', spend: '' });
- function company(values = {}) { return { id: uid(), name: '', site: '', industry: 'Home services', area: '', goal: '', notes: '', competitors: '', records: {}, channels: [], tasks: [], scans: [], scenario: emptyScenario(), ...values }; }
+ const operationKeys = ['demand','targetDemand','hours','targetHours','hoursPerJob','price','directCost','overhead','extraCost'];
+ const emptyOperations = () => Object.fromEntries(operationKeys.map(k => [k,'']));
+ const stages = ['New prospect','In review','Proposal / pilot','Active client','Paused'];
+ function company(values = {}) { return { id: uid(), name: '', site: '', industry: 'Home services', area: '', goal: '', notes: '', competitors: '', records: {}, channels: [], tasks: [], scans: [], scenario: emptyScenario(), operations: emptyOperations(), profile: {stage:'New prospect',offer:'',nextReview:''}, ...values }; }
  function scenario(values) {
   const keys = ['visits', 'currentRate', 'targetRate', 'capacity', 'value', 'cost', 'spend'];
   if (keys.some(k => values[k] === '' || values[k] == null || !Number.isFinite(Number(values[k])) || Number(values[k]) < 0)) return null;
@@ -10,6 +13,32 @@
   if (v.currentRate > 100 || v.targetRate > 100 || v.visits > 1e8 || v.capacity > 1e8 || ['value','cost','spend'].some(k => v[k] > 1e9)) return null;
   const current = Math.min(v.visits * v.currentRate / 100, v.capacity), target = Math.min(v.visits * v.targetRate / 100, v.capacity);
   return { current, target, revenue: (target - current) * v.value, contribution: (target - current) * (v.value - v.cost) - v.spend, limited: v.visits * v.targetRate / 100 > v.capacity };
+ }
+ function operations(values) {
+  if (!values || operationKeys.some(k => values[k] === '' || values[k] == null || !Number.isFinite(Number(values[k])) || Number(values[k]) < 0 || Number(values[k]) > 1e9)) return null;
+  const v = Object.fromEntries(operationKeys.map(k => [k,Number(values[k])]));
+  if (v.hoursPerJob < 0.01 || !Number.isInteger(v.demand) || !Number.isInteger(v.targetDemand)) return null;
+  const month = (demand,hours,extra) => {
+   const capacity = Math.floor(hours / v.hoursPerJob), jobs = Math.min(demand,capacity);
+   return {capacity,jobs,unserved:demand-jobs,usedHours:jobs*v.hoursPerJob,revenue:jobs*v.price,afterCosts:jobs*(v.price-v.directCost)-v.overhead-extra};
+  };
+  const current = month(v.demand,v.hours,0), target = month(v.targetDemand,v.targetHours,v.extraCost);
+  return {current,target,change:target.afterCosts-current.afterCosts};
+ }
+ function compareScans(previous,current) {
+  if (!previous || !current) return {changes:[],compared:0};
+  const before = new Map(previous.pages.map(p => [p.url,p]));
+  let compared = 0; const changes = [];
+  for (const page of current.pages) {
+   const old = before.get(page.url); if (!old) continue;
+   const findings = new Map(old.findings.map(f => [f.id,f]));
+   for (const finding of page.findings) {
+    const prior = findings.get(finding.id); if (!prior) continue;
+    compared++;
+    if (prior.status !== finding.status) changes.push({url:page.url,label:finding.label,before:prior.status,after:finding.status,evidence:finding.evidence});
+   }
+  }
+  return {changes,compared};
  }
  function validate(data) {
   if (!data || data.version !== 1 || !Array.isArray(data.companies) || data.companies.length > 200) throw new Error('This is not a supported workspace backup.');
@@ -22,10 +51,19 @@
    for (const k of ['channels','tasks','scans']) if (!Array.isArray(c[k]) || c[k].length > 2000) throw new Error('Invalid workspace records.');
    const string = (v, max = 12000) => typeof v === 'string' && v.length <= max;
    const metric = v => v === null || (typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1e12);
+   // Optional additions keep earlier encrypted backups readable.
+   if (c.operations == null) c.operations = emptyOperations();
+   if (!c.operations || typeof c.operations !== 'object' || Array.isArray(c.operations) || operationKeys.some(k => !(c.operations[k] === '' || (['string','number'].includes(typeof c.operations[k]) && Number.isFinite(Number(c.operations[k])) && Number(c.operations[k]) >= 0 && Number(c.operations[k]) <= 1e9)))) throw new Error('Invalid operating assumptions.');
+   if (c.profile == null) c.profile = {stage:'New prospect',offer:'',nextReview:''};
+   if (!c.profile || !stages.includes(c.profile.stage) || !string(c.profile.offer,1000) || !string(c.profile.nextReview,10) || (c.profile.nextReview && !/^\d{4}-\d{2}-\d{2}$/.test(c.profile.nextReview))) throw new Error('Invalid company profile.');
    for (const task of c.tasks) if (!task || !string(task.id,80) || !/^[\w-]+$/.test(task.id) || !string(task.title,500) || !string(task.detail) || !string(task.category,100) || !string(task.due,10) || !['To do','In progress','Done'].includes(task.status)) throw new Error('Invalid action record.');
    for (const [month,r] of Object.entries(c.records)) if (!/^\d{4}-\d{2}$/.test(month) || !r || !string(r.source,240) || !string(r.updatedAt,80) || ['visits','inquiries','jobs','revenue','spend'].some(k=>!metric(r[k]))) throw new Error('Invalid monthly record.');
    for (const r of c.channels) if (!r || !string(r.id,80) || !string(r.month,7) || !/^\d{4}-\d{2}$/.test(r.month) || !string(r.source,100) || ['inquiries','customers','revenue','spend'].some(k=>!metric(r[k]))) throw new Error('Invalid marketing record.');
    for (const s of c.scans) if (!s || !string(s.scannedAt,80) || !string(s.scope,2000) || !Array.isArray(s.warnings) || s.warnings.length>10 || s.warnings.some(w=>!w||!string(w.url,2048)||!string(w.message,1000)) || !Array.isArray(s.pages) || !s.pages.length || s.pages.length > 4 || s.pages.some(p => !p || !string(p.url,2048) || !string(p.title,250) || !Array.isArray(p.findings) || p.findings.length > 50 || p.findings.some(f => !f || !['detected','review'].includes(f.status) || ['id','label','evidence','action','category'].some(k=>!string(f[k],2000))))) throw new Error('Invalid scan record.');
+   for (const s of c.scans) for (const p of s.pages) {
+    if (p.description != null && !string(p.description,400)) throw new Error('Invalid page description.');
+    for (const k of ['headings','contacts','social']) if (p[k] != null && (!Array.isArray(p[k]) || p[k].length>12 || p[k].some(x=>!string(x,2048)))) throw new Error('Invalid page details.');
+   }
   }
   return data;
  }
@@ -58,8 +96,12 @@
    ['share','Social sharing image','review','Missing in this example','Add a branded sharing image.','Visibility']
   ].map(([id,label,status,evidence,action,category]) => ({ id,label,status,evidence,action,category }));
   const c = company({ id:'example-lawn', name:'Juniper Lawn Care', industry:'Home services', area:'Example service area', goal:'Turn seasonal interest into booked lawn-care jobs.', site:'https://juniper.example', notes:'Fictional company. This workspace shows how verified website findings and owner-entered business records fit together.', competitors:'Add manually reviewed competitor names, public URLs, dates, and observations here.', scenario:{visits:400,currentRate:2,targetRate:3,capacity:14,value:120,cost:50,spend:100}, records:{'2026-09':{visits:400,inquiries:24,jobs:8,revenue:960,spend:100,source:'Illustrative sample figures',updatedAt:'2026-09-24T09:00:00Z'}}, channels:[{id:'ch1',month:'2026-09',source:'Google',inquiries:12,customers:4,revenue:480,spend:0},{id:'ch2',month:'2026-09',source:'Instagram',inquiries:8,customers:2,revenue:240,spend:100},{id:'ch3',month:'2026-09',source:'Referral',inquiries:4,customers:2,revenue:240,spend:0}], tasks:[{id:'t1',title:'Make the quote request easier to find',category:'Inquiries',status:'To do',due:'',detail:'Test the service-to-quote journey on a phone.'},{id:'t2',title:'Write a seasonal service description',category:'Search',status:'In progress',due:'',detail:'Explain the service area, offer, and next step.'},{id:'t3',title:'Add a branded sharing image',category:'Visibility',status:'To do',due:'',detail:'Check how the website looks when shared.'}],scans:[{sample:true,scannedAt:'2026-09-24T09:00:00Z',scope:'Illustrative sample review. No real website was scanned.',warnings:[],pages:[{url:'https://juniper.example',title:'Juniper Lawn Care | Local lawn care',fetchMs:0,bytes:0,findings,social:[]}]}] });
-  const beauty = company({id:'example-beauty',name:'Luna Beauty Studio',industry:'Beauty & wellness',area:'Example service area',goal:'Make service choices and appointment requests easier.',scenario:{visits:600,currentRate:2,targetRate:3,capacity:20,value:95,cost:30,spend:120},notes:'Fictional beauty business. Try a booking scenario, add an action, or enter sample monthly figures.'});
+  c.profile = {stage:'In review',offer:'Weekly lawn care and seasonal cleanups.',nextReview:'2026-10-01'};
+  c.operations = {demand:20,targetDemand:30,hours:40,targetHours:50,hoursPerJob:2,price:120,directCost:50,overhead:300,extraCost:100};
+  Object.assign(c.scans[0].pages[0],{description:'Illustrative lawn-care business serving an example neighborhood.',headings:['Weekly lawn care','Seasonal cleanups','Request a quote'],contacts:['mailto:hello@juniper.example']});
+  const baseline = JSON.parse(JSON.stringify(c.scans[0])); baseline.scannedAt='2026-09-10T09:00:00Z'; baseline.pages[0].findings.find(f=>f.id==='contact').status='review'; baseline.pages[0].findings.find(f=>f.id==='contact').evidence='No contact link in the earlier fictional example.'; c.scans.unshift(baseline);
+  const beauty = company({id:'example-beauty',name:'Luna Beauty Studio',industry:'Beauty & wellness',area:'Example service area',goal:'Make service choices and appointment requests easier.',scenario:{visits:600,currentRate:2,targetRate:3,capacity:20,value:95,cost:30,spend:120},operations:{demand:30,targetDemand:40,hours:45,targetHours:54,hoursPerJob:1.5,price:95,directCost:30,overhead:500,extraCost:120},notes:'Fictional beauty business. Try a booking scenario, add an action, or enter sample monthly figures.'});
   return { version:1, selected:c.id, companies:[c,beauty] };
  }
- root.VeyzaModel = { uid, company, scenario, validate, derive, encrypt, decrypt, envelope, sampleData, salt: () => b64(crypto.getRandomValues(new Uint8Array(16))) };
+ root.VeyzaModel = { uid, company, scenario, operations, compareScans, stages, validate, derive, encrypt, decrypt, envelope, sampleData, salt: () => b64(crypto.getRandomValues(new Uint8Array(16))) };
 })(typeof window !== 'undefined' ? window : globalThis);

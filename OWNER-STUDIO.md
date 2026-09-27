@@ -11,11 +11,13 @@ Only this project needs the variable. The public project’s scanner stays disab
 ## What works
 
 - Add, edit, find, and switch between companies.
+- Open a company snapshot with reviewed page descriptions, headings, contact routes, social profile links, sources, and dates. Keep confirmed services, relationship stage, and a next-review date alongside it. The date does not send reminders.
 - Review a main page and up to three linked public service/contact/about/pricing/booking pages. Results include timestamps, source URLs, observed HTML signals, limitations, and failed-page notices.
-- Keep up to 12 scan snapshots per company and compare the latest two. Signal counts are not SEO, ranking, or performance scores.
+- Keep up to 12 scan snapshots per company and compare the latest two. Changed statuses are shown only for matching page URLs and check IDs. Signal counts are not SEO, ranking, or performance scores.
 - Turn findings into actions; add due dates and update completion status.
 - Enter monthly business totals and recorded marketing sources; build campaign links with UTM tags.
 - Compare manually entered conversion/capacity/cost scenarios. Unknown inputs stay unknown.
+- Test a separate operating scenario for whole-job demand, team labor hours, direct job costs, fixed costs, and added spending. Capacity rounds down and caps served demand. The comparison excludes tax, refunds, and costs not entered; it does not predict demand.
 - Keep owner and competitor research notes; copy a reviewable company brief. No outreach is sent.
 - Export an encrypted backup; import additional companies without overwriting existing company IDs.
 

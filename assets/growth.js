@@ -69,6 +69,7 @@ document.getElementById('scenarioForm').addEventListener('submit',event=>event.p
 document.getElementById('scenarioForm').addEventListener('reset',()=>setTimeout(updateScenario,0));
 document.querySelectorAll('[data-interest]').forEach(link => link.addEventListener('click',()=>{
   document.getElementById('supportChoice').value=link.dataset.interest;
+  document.getElementById('inquiryDetails').open=true;
 }));
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'){
