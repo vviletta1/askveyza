@@ -2,7 +2,8 @@
  'use strict';
  const M = window.VeyzaModel, $ = id => document.getElementById(id);
  const KEY = 'askveyza-owner-encrypted-v1';
- const demo = new URLSearchParams(location.search).get('demo') === '1';
+ const preview = new URLSearchParams(location.search).get('demo');
+ const demo = preview === '1' || preview === 'empty';
  const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
  const number = value => value === '' || value == null || !Number.isFinite(Number(value)) ? '—' : new Intl.NumberFormat('en-US',{maximumFractionDigits:1}).format(Number(value));
  const money = value => value === '' || value == null || !Number.isFinite(Number(value)) ? '—' : new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(value));
@@ -27,7 +28,7 @@
   });
   return saveQueue;
  }
- function showWorkspace() { $('gate').hidden = true; $('studio').hidden = false; $('demoBanner').hidden = !demo; $('storageLabel').textContent = demo ? 'Sample workspace' : 'Encrypted on this device'; lastActive = Date.now(); render(); }
+ function showWorkspace() { $('gate').hidden = true; $('studio').hidden = false; $('demoBanner').hidden = !demo; $('storageLabel').textContent = demo ? 'Preview · changes are not saved' : 'Encrypted on this device'; if (preview === 'empty') { $('demoBanner').querySelector('strong').textContent = 'Empty workspace preview'; $('demoBanner').querySelector('span').textContent = 'This is how a new workspace starts. Practice changes are not saved.'; } lastActive = Date.now(); render(); }
  function metric(label,value,note,icon='↗') { return `<article class="metric"><div class="metric-top"><span>${label}</span><span class="metric-icon" aria-hidden="true">${icon}</span></div><strong>${value}</strong><small>${note}</small></article>`; }
  function monthlyControl() { return `<div class="month-select"><label for="recordMonth">Reporting month</label><input type="month" id="recordMonth" value="${esc(month)}" required></div>`; }
  function record(c) { return c.records[month] || {}; }
@@ -44,7 +45,7 @@
   $('editCompany').disabled = !c; $('scanCompany').disabled = !c || scanning;
   $('scanCompany').textContent = scanning ? 'Reviewing website…' : 'Review website ↗';
   document.querySelectorAll('[data-view]').forEach(b => { b.classList.toggle('active',b.dataset.view === view); if (b.dataset.view === view) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
-  if (!c) { $('view').innerHTML = empty('Start with one company.','Add its name, website, and main goal. Your private company list will grow from here.','Add your first company','add'); return; }
+  if (!c) { $('view').innerHTML = empty('No companies added yet.','Start by adding one business. Website findings appear after a review; customer and revenue figures stay blank until you enter them.','Add your first company','add'); return; }
   $('view').innerHTML = ({overview, profile, audit, twin, growth, actions, notes}[view] || overview)(c);
   if (view === 'twin') { updateScenario(); updateOperations(); }
  }
@@ -175,7 +176,7 @@
   if(website&&!safeUrl(website)) { $('companyError').textContent='Enter a valid public HTTP or HTTPS website.'; return; }
   if(!editId&&state.companies.length>=200){$('companyError').textContent='This workspace supports up to 200 companies.';return;}
   const values={name,site:website?safeUrl(website):'',industry:$('companyIndustry').value,area:$('companyArea').value.trim(),goal:$('companyGoal').value.trim()};
-  const c=editId?state.companies.find(x=>x.id===editId):M.company(); Object.assign(c,values); if(!editId)state.companies.push(c); state.selected=c.id; $('companyDialog').close(); render(); await persist();
+  const c=editId?state.companies.find(x=>x.id===editId):M.company(); Object.assign(c,values); if(!editId)state.companies.push(c); state.selected=c.id; if(!editId) view='overview'; $('companyDialog').close(); render(); await persist();
  });
  $('view').addEventListener('input',event=>{if(event.target.closest('#scenarioForm'))updateScenario();if(event.target.closest('#operationsForm'))updateOperations();});
  $('view').addEventListener('change',event=>{
@@ -208,6 +209,6 @@
  $('importForm').addEventListener('submit',async event=>{event.preventDefault();$('importConfirm').disabled=true;try{const key=await M.derive($('backupKey').value,incoming.salt);const data=await M.decrypt(incoming,key);const added=data.companies.filter(c=>!state.companies.some(x=>x.id===c.id));if(state.companies.length+added.length>200)throw new Error('This would exceed the 200-company limit.');state.companies.push(...added);await persist();$('importDialog').close();render();notify(`${added.length} companies imported. Existing company records were kept.`);incoming=null;}catch{$('importStatus').textContent='The backup could not be opened. Check its original access key and file. Existing records were kept.';}finally{$('backupKey').value='';$('importConfirm').disabled=false;}});
  for(const type of ['pointerdown','keydown'])document.addEventListener(type,()=>{lastActive=Date.now();},{passive:true});
  setInterval(()=>{if(!demo&&state&&(Date.now()-lastActive>15*60*1000||Date.now()>sessionEnds))lock();},30000);
- if(demo){state=M.sampleData();month='2026-09';showWorkspace();}
+ if(demo){state=preview === 'empty' ? {version:1,selected:'',companies:[]} : M.sampleData();if(preview === '1')month='2026-09';showWorkspace();}
  else fetch('/api/owner-session',{cache:'no-store'}).then(r=>r.json()).then(data=>{$('setupNote').hidden=data.configured;$('loginStatus').textContent=data.configured?'Use your owner key. Company records stay on this device.':'Owner sign-in needs its one-time setup. Explore the example below.';$('unlock').disabled=!data.configured;}).catch(()=>{$('loginStatus').textContent='Sign-in service is unavailable. You can still explore the example workspace.';});
 })();
