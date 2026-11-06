@@ -3,13 +3,13 @@
 const pageRoutes = {
   home:['.hero','.plain-answer','.strip','#service'],
   how:['#demo-video','#difference','#how','#start-simple'],
-  services:['.service-subnav','#growth','#sample-report','#business-twin'],
+  services:['.service-subnav','#growth','#ads-seo','#sample-report','#business-twin'],
   pricing:['#pricing','#questions'],
   contact:['#request']
 };
 const deepRoutePage = {
   top:'home',home:'home',service:'home',how:'how','demo-video':'how',difference:'how','start-simple':'how',
-  services:'services',growth:'services','sample-report':'services','business-twin':'services',
+  services:'services',growth:'services','ads-seo':'services','sample-report':'services','business-twin':'services',
   pricing:'pricing',questions:'pricing',contact:'contact',request:'contact'
 };
 const managedSections = [...new Set(Object.values(pageRoutes).flat().flatMap(selector => [...document.querySelectorAll(selector)]))];
@@ -19,8 +19,8 @@ function showSitePage(route, shouldScroll = true) {
   const visible = new Set(pageRoutes[page].flatMap(selector => [...document.querySelectorAll(selector)]));
   managedSections.forEach(section => { section.hidden = !visible.has(section); });
   if (page === 'services') {
-    const panel = ['growth','sample-report','business-twin'].includes(id) ? id : 'growth';
-    for (const panelId of ['growth','sample-report','business-twin']) document.getElementById(panelId).hidden = panelId !== panel;
+    const panel = ['growth','ads-seo','sample-report','business-twin'].includes(id) ? id : 'growth';
+    for (const panelId of ['growth','ads-seo','sample-report','business-twin']) document.getElementById(panelId).hidden = panelId !== panel;
     document.querySelectorAll('[data-service-panel]').forEach(button => {
       const active = button.dataset.servicePanel === panel;
       button.classList.toggle('active',active);

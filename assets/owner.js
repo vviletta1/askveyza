@@ -13,9 +13,10 @@
  let state = null, vaultKey = null, salt = null, view = 'overview', month = new Date().toISOString().slice(0,7), editId = null, saveQueue = Promise.resolve(), lastActive = Date.now(), sessionEnds = 0, scanning = false, locking = false, incoming = null;
  let activeSection = 'businesses';
  function section(name) {
-  activeSection = ['businesses','workspace','backups'].includes(name) ? name : 'businesses';
+  activeSection = ['businesses','workspace','backups','setup'].includes(name) ? name : 'businesses';
   $('businessesPage').hidden = activeSection !== 'businesses';
   $('backupsPage').hidden = activeSection !== 'backups';
+  $('setupPage').hidden = activeSection !== 'setup';
   $('workspace').hidden = activeSection !== 'workspace';
   document.querySelectorAll('.studio-nav [data-section]').forEach(b => { if(b.dataset.section === activeSection) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
  }
