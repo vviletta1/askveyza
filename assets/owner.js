@@ -36,6 +36,8 @@
  function render() {
   if (!state) return;
   if (!current()) state.selected = state.companies[0]?.id || '';
+  const backupNotice = document.getElementById('backupNotice');
+  if (backupNotice) backupNotice.hidden = demo || !state.companies.length;
   const c = current(), query = $('companySearch').value.trim().toLowerCase();
   $('companyList').innerHTML = state.companies.filter(x => x.name.toLowerCase().includes(query)).map(x => `<button class="company-option ${x.id === state.selected ? 'active' : ''}" data-company="${esc(x.id)}" ${x.id === state.selected ? 'aria-current="true"' : ''}><span class="company-initials">${esc(x.name.split(' ').slice(0,2).map(t=>t[0]).join(''))}</span><span><strong>${esc(x.name)}</strong><small>${esc(x.industry)}</small></span></button>`).join('') || '<p class="helper">No companies here yet.</p>';
   $('companyTitle').textContent = c?.name || 'Your company, in focus.';

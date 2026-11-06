@@ -6,6 +6,7 @@ const app = express();
 app.disable('x-powered-by');
 app.use(express.json({ limit: '8kb' }));
 app.all('/api/owner-session', require('./api/owner-session'));
+app.all('/api/inquiry', require('./api/inquiry'));
 app.all('/api/scan', require('./api/scan'));
 app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'AskVeyza' }));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -13,6 +14,7 @@ app.get(['/owner', '/owner.html', '/scanner-report', '/scanner-report.html', '/w
   res.set({ 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' });
   res.sendFile(path.join(__dirname, 'owner.html'));
 });
+for (const page of ['privacy', 'service-details', 'example']) app.get(['/' + page, '/' + page + '.html'], (_req, res) => res.sendFile(path.join(__dirname, page + '.html')));
 const redirects = { pricing: '/#pricing', 'how-it-works': '/#how', demo: '/#demo-video', waitlist: '/#request' };
 for (const [from, to] of Object.entries(redirects)) app.get(['/' + from, '/' + from + '.html'], (_req, res) => res.redirect(302, to));
 app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(__dirname, req.hostname === 'askveyza-owner.vercel.app' ? 'owner.html' : 'index.html')));

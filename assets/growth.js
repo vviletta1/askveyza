@@ -60,7 +60,7 @@ function updateScenario() {
 
 function inquiry() {
   const value = id => document.getElementById(id).value.trim();
-  return 'Hi Violetta,\n\nI would like to discuss a website or growth support for '+value('business')+'.\n\nWebsite or profile: '+(value('website')||'Not provided')+'\nWebsite plan: '+value('planChoice')+'\nMain goal: '+value('goalChoice')+'\nExtra support: '+value('supportChoice')+'\nPayment preference: '+value('paymentChoice')+'\nAdditional details: '+(value('requestNotes')||'None provided')+'\n\nPlease share next steps, the proposed scope, timeline, and any separate costs. I would like to review the proposal before committing.';
+  return 'Hi Violetta,\n\nI would like to discuss a website or growth support for '+value('business')+'.\n\nReply email: '+value('replyEmail')+'\nWebsite or profile: '+(value('website')||'Not provided')+'\nWebsite plan: '+value('planChoice')+'\nMain goal: '+value('goalChoice')+'\nExtra support: '+value('supportChoice')+'\nPayment preference: '+value('paymentChoice')+'\nAdditional details: '+(value('requestNotes')||'None provided')+'\n\nPlease share next steps, the proposed scope, timeline, and any separate costs. I would like to review the proposal before committing.';
 }
 
 document.getElementById('industryExample').addEventListener('change',updateGrowthExample);
