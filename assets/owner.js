@@ -11,6 +11,16 @@
  const date = value => { const d = new Date(value); return Number.isNaN(d.valueOf()) ? 'Not recorded' : d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); };
  const safeUrl = value => { try { const u = new URL(/^https?:\/\//i.test(value) ? value : 'https://' + value); return ['http:','https:'].includes(u.protocol) && !u.username && !u.password && u.hostname.includes('.') ? u.href : ''; } catch { return ''; } };
  let state = null, vaultKey = null, salt = null, view = 'overview', month = new Date().toISOString().slice(0,7), editId = null, saveQueue = Promise.resolve(), lastActive = Date.now(), sessionEnds = 0, scanning = false, locking = false, incoming = null;
+ let activeSection = 'businesses';
+ function section(name) {
+  activeSection = ['businesses','workspace','backups','setup'].includes(name) ? name : 'businesses';
+  $('businessesPage').hidden = activeSection !== 'businesses';
+  $('backupsPage').hidden = activeSection !== 'backups';
+  $('setupPage').hidden = activeSection !== 'setup';
+  $('workspace').hidden = activeSection !== 'workspace';
+  document.querySelectorAll('.studio-nav [data-section]').forEach(b => { if(b.dataset.section === activeSection) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
+ }
+ document.querySelectorAll('[data-section]').forEach(b => b.addEventListener('click', () => section(b.dataset.section)));
  const current = () => state?.companies.find(c => c.id === state.selected);
  const latest = c => c.scans[c.scans.length - 1];
  const firstFindings = c => latest(c)?.pages?.[0]?.findings || [];
@@ -28,7 +38,7 @@
   });
   return saveQueue;
  }
- function showWorkspace() { $('gate').hidden = true; $('studio').hidden = false; $('demoBanner').hidden = !demo; $('storageLabel').textContent = demo ? 'Preview · changes are not saved' : 'Encrypted on this device'; if (preview === 'empty') { $('demoBanner').querySelector('strong').textContent = 'Empty workspace preview'; $('demoBanner').querySelector('span').textContent = 'This is how a new workspace starts. Practice changes are not saved.'; } lastActive = Date.now(); render(); }
+ function showWorkspace() { $('gate').hidden = true; $('studio').hidden = false; $('demoBanner').hidden = !demo; $('storageLabel').textContent = demo ? 'Preview · changes are not saved' : 'Encrypted on this device'; if (preview === 'empty') { $('demoBanner').querySelector('strong').textContent = 'Empty workspace preview'; $('demoBanner').querySelector('span').textContent = 'This is how a new workspace starts. Practice changes are not saved.'; } lastActive = Date.now(); section('businesses'); render(); }
  function metric(label,value,note,icon='↗') { return `<article class="metric"><div class="metric-top"><span>${label}</span><span class="metric-icon" aria-hidden="true">${icon}</span></div><strong>${value}</strong><small>${note}</small></article>`; }
  function monthlyControl() { return `<div class="month-select"><label for="recordMonth">Reporting month</label><input type="month" id="recordMonth" value="${esc(month)}" required></div>`; }
  function record(c) { return c.records[month] || {}; }
@@ -39,7 +49,8 @@
   const backupNotice = document.getElementById('backupNotice');
   if (backupNotice) backupNotice.hidden = demo || !state.companies.length;
   const c = current(), query = $('companySearch').value.trim().toLowerCase();
-  $('companyList').innerHTML = state.companies.filter(x => x.name.toLowerCase().includes(query)).map(x => `<button class="company-option ${x.id === state.selected ? 'active' : ''}" data-company="${esc(x.id)}" ${x.id === state.selected ? 'aria-current="true"' : ''}><span class="company-initials">${esc(x.name.split(' ').slice(0,2).map(t=>t[0]).join(''))}</span><span><strong>${esc(x.name)}</strong><small>${esc(x.industry)}</small></span></button>`).join('') || '<p class="helper">No companies here yet.</p>';
+  $('businessCount').textContent = state.companies.length + (state.companies.length === 1 ? ' business' : ' businesses');
+  $('companyList').innerHTML = state.companies.filter(x => x.name.toLowerCase().includes(query)).map(x => `<button class="business-card" data-company="${esc(x.id)}"><span class="business-card-top"><span class="company-initials">${esc(x.name.split(' ').slice(0,2).map(t=>t[0]).join(''))}</span><span class="tag">${esc(x.profile?.stage || 'New prospect')}</span></span><strong>${esc(x.name)}</strong><span class="business-card-meta">${esc(x.industry)}${x.area ? ' · ' + esc(x.area) : ''}</span><span class="business-card-goal">${esc(x.goal || 'Add a goal to focus your next steps.')}</span><span class="business-card-bottom"><span>${x.tasks.filter(t => t.status !== 'Done').length} open actions</span><b>Open workspace ↗</b></span></button>`).join('') || '<div class="empty directory-empty"><h2>' + (query ? 'No matching businesses.' : 'Your first business starts here.') + '</h2><p>' + (query ? 'Try another business name.' : 'Choose Add business to keep its website review, action plan, and notes in one place.') + '</p></div>';
   $('companyTitle').textContent = c?.name || 'Your company, in focus.';
   $('breadcrumbCompany').textContent = c?.name || 'Get started';
   $('companyEyebrow').textContent = demo ? 'EXAMPLE COMPANY WORKSPACE' : 'COMPANY WORKSPACE';
@@ -168,7 +179,7 @@
   finally { password=''; $('accessKey').value=''; $('unlock').disabled=false; }
  });
  $('companySearch').addEventListener('input',render);
- $('companyList').addEventListener('click',event=>{const b=event.target.closest('[data-company]');if(!b)return;state.selected=b.dataset.company;view='overview';notify('');render();persist();});
+ $('companyList').addEventListener('click',event=>{const b=event.target.closest('[data-company]');if(!b)return;state.selected=b.dataset.company;view='overview';notify('');render();section('workspace');persist();});
  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{notify('');go(b.dataset.view);}));
  $('addCompany').addEventListener('click',()=>openCompany()); $('editCompany').addEventListener('click',()=>openCompany(current())); $('scanCompany').addEventListener('click',runScan); $('lockWorkspace').addEventListener('click',lock);
  document.querySelectorAll('.close-dialog').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
@@ -178,7 +189,7 @@
   if(website&&!safeUrl(website)) { $('companyError').textContent='Enter a valid public HTTP or HTTPS website.'; return; }
   if(!editId&&state.companies.length>=200){$('companyError').textContent='This workspace supports up to 200 companies.';return;}
   const values={name,site:website?safeUrl(website):'',industry:$('companyIndustry').value,area:$('companyArea').value.trim(),goal:$('companyGoal').value.trim()};
-  const c=editId?state.companies.find(x=>x.id===editId):M.company(); Object.assign(c,values); if(!editId)state.companies.push(c); state.selected=c.id; if(!editId) view='overview'; $('companyDialog').close(); render(); await persist();
+  const c=editId?state.companies.find(x=>x.id===editId):M.company(); Object.assign(c,values); if(!editId)state.companies.push(c); state.selected=c.id; if(!editId) view='overview'; $('companyDialog').close(); render(); section('workspace'); await persist();
  });
  $('view').addEventListener('input',event=>{if(event.target.closest('#scenarioForm'))updateScenario();if(event.target.closest('#operationsForm'))updateOperations();});
  $('view').addEventListener('change',event=>{
