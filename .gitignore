@@ -16,3 +16,7 @@ npm-debug.log*
 # Editor folders
 .vscode/
 .idea/
+
+.env.*
+!.env.example
+.vercel/

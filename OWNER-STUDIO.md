@@ -40,3 +40,16 @@ This is a best-effort HTML review. It does not sign into accounts, measure searc
 Run `npm install`, supply `OWNER_ACCESS_KEY` in your local environment, and run `npm start`. Open `http://localhost:5500/owner`. The server and Vercel functions share the same scan/authentication implementation. Use `npm test` for the core regression tests.
 
 Deployment through the GitHub `main` branch updates the connected Vercel projects. No new paid service or Supabase project is required. Actual analytics/social/booking integrations remain a separate implementation; the dashboard labels them as not connected.
+
+## Website readiness update
+
+The public site now links to `/example`, `/privacy`, and `/service-details`.
+The inquiry form checks `/api/inquiry` for availability. It keeps the email-app and copy options when direct sending is not configured. Failed direct sends preserve inputs and never claim success.
+
+To activate direct delivery on the **askveyza** project, configure `RESEND_API_KEY` (sensitive, Production) and `INQUIRY_FROM_EMAIL` (a sender on your verified Resend domain), then redeploy. The destination is fixed to `violetta@askveyza.com`; the visitor email is Reply-To only. Verify actual inbox receipt with an explicitly authorized test after setup. No service has been purchased or account created by this update.
+
+The handler checks same-origin JSON requests, bounds fields, uses a honeypot and a per-instance throttle, and deduplicates matching email payloads for a short window using provider idempotency keys. Per-instance limits are not distributed protection: configure platform rate limiting before enabling sending for substantial public traffic. Monitor provider quotas and delivery failures.
+
+Remaining work: configure the owner key directly in Vercel and keep it in a password manager; connect email delivery; decide support update allowances and response targets; choose a durable storage provider before implementing cloud sync. No account-based sync or backup recovery has been added.
+
+Support proposal worksheet (not published as a commitment): for each plan decide monthly update allowance, definition of a small update, acknowledgement/turnaround target, revision allowance, overage quote rules, cancellation notice, and handoff contents.
